@@ -1,0 +1,58 @@
+"","Publisher.Group","Month","Transaction.type","mean_val","date"
+"1","Government & Public Sector","2020-01","spending",188.144814,2020-01-01
+"2","Government & Public Sector","2020-02","spending",134.78497,2020-02-01
+"3","Government & Public Sector","2020-03","spending",979.240017,2020-03-01
+"4","Government & Public Sector","2020-04","spending",614.826594,2020-04-01
+"5","Government & Public Sector","2020-05","spending",838.129531,2020-05-01
+"6","Government & Public Sector","2020-06","spending",1406.446005,2020-06-01
+"7","Government & Public Sector","2020-07","spending",1158.690498,2020-07-01
+"8","Government & Public Sector","2020-08","spending",941.7377,2020-08-01
+"9","Government & Public Sector","2020-09","spending",1628.455175,2020-09-01
+"10","Government & Public Sector","2020-10","spending",845.970657,2020-10-01
+"11","Government & Public Sector","2020-11","spending",1135.54109,2020-11-01
+"12","Government & Public Sector","2020-12","spending",5122.149755,2020-12-01
+"13","Government & Public Sector","2021-01","spending",281.331765,2021-01-01
+"14","Government & Public Sector","2021-02","spending",543.135297,2021-02-01
+"15","Government & Public Sector","2021-03","spending",4414.985308,2021-03-01
+"16","Government & Public Sector","2021-04","spending",317.302661,2021-04-01
+"17","Government & Public Sector","2021-05","spending",572.338768,2021-05-01
+"18","Government & Public Sector","2021-06","spending",162.704558,2021-06-01
+"19","Government & Public Sector","2021-07","spending",4.981509,2021-07-01
+"20","Multilateral","2020-01","spending",4.754226,2020-01-01
+"21","Multilateral","2020-02","spending",2.266126,2020-02-01
+"22","Multilateral","2020-03","spending",376.049712,2020-03-01
+"23","Multilateral","2020-04","spending",2755.366209,2020-04-01
+"24","Multilateral","2020-05","spending",1145.631029,2020-05-01
+"25","Multilateral","2020-06","spending",8092.177245,2020-06-01
+"26","Multilateral","2020-07","spending",3067.864972,2020-07-01
+"27","Multilateral","2020-08","spending",1354.326278,2020-08-01
+"28","Multilateral","2020-09","spending",5728.485104,2020-09-01
+"29","Multilateral","2020-10","spending",910.346553,2020-10-01
+"30","Multilateral","2020-11","spending",963.774533,2020-11-01
+"31","Multilateral","2020-12","spending",8431.921248,2020-12-01
+"32","Multilateral","2021-01","spending",1008.521349,2021-01-01
+"33","Multilateral","2021-02","spending",122.476982,2021-02-01
+"34","Multilateral","2021-03","spending",7161.667398,2021-03-01
+"35","Multilateral","2021-04","spending",764.531529,2021-04-01
+"36","Multilateral","2021-05","spending",1928.51949,2021-05-01
+"37","Multilateral","2021-06","spending",37.366787,2021-06-01
+"38","Multilateral","2021-07","spending",1.6e-05,2021-07-01
+"39","Non Governmental Organisation","2020-01","spending",0.345462,2020-01-01
+"40","Non Governmental Organisation","2020-02","spending",1.534096,2020-02-01
+"41","Non Governmental Organisation","2020-03","spending",6.683305,2020-03-01
+"42","Non Governmental Organisation","2020-04","spending",9.288009,2020-04-01
+"43","Non Governmental Organisation","2020-05","spending",64.896758,2020-05-01
+"44","Non Governmental Organisation","2020-06","spending",171.911302,2020-06-01
+"45","Non Governmental Organisation","2020-07","spending",72.90748,2020-07-01
+"46","Non Governmental Organisation","2020-08","spending",27.10549,2020-08-01
+"47","Non Governmental Organisation","2020-09","spending",2161.224727,2020-09-01
+"48","Non Governmental Organisation","2020-10","spending",51.000253,2020-10-01
+"49","Non Governmental Organisation","2020-11","spending",53.386186,2020-11-01
+"50","Non Governmental Organisation","2020-12","spending",80.939094,2020-12-01
+"51","Non Governmental Organisation","2021-01","spending",306.459636,2021-01-01
+"52","Non Governmental Organisation","2021-02","spending",44.006138,2021-02-01
+"53","Non Governmental Organisation","2021-03","spending",445.720754,2021-03-01
+"54","Non Governmental Organisation","2021-04","spending",15.336111,2021-04-01
+"55","Non Governmental Organisation","2021-05","spending",23.840568,2021-05-01
+"56","Non Governmental Organisation","2021-06","spending",24.424822,2021-06-01
+"57","Non Governmental Organisation","2021-07","spending",0.660319,2021-07-01

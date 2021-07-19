@@ -2,7 +2,7 @@
 <html>
   <head>
     <meta charset='utf-8' />
-    <title>Viz Starter</title>
+    <title>IATI Datastory</title>
     <meta name='viewport' content='initial-scale=1,maximum-scale=1,user-scalable=no' />
     <link rel='icon' type='image/png' href='https://data.humdata.org/images/icons/hdx.ico' />
     <link href="https://fonts.googleapis.com/css?family=Source+Sans+Pro&display=swap" rel="stylesheet">
@@ -14,8 +14,30 @@
     <main>
       <div class='grid-container'>
         <div class='col-12'>
-          <h1>Viz Starter</h1>
+          <h1>IATI Data Story</h1>
           <p>Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium doloremque laudantium, totam rem aperiam, eaque ipsa quae ab illo inventore veritatis et quasi architecto beatae vitae dicta sunt explicabo. Nemo enim ipsam voluptatem quia voluptas sit aspernatur aut odit aut fugit, sed quia consequuntur magni dolores eos qui ratione voluptatem sequi nesciunt.</p>
+
+          <div class="container line-container">
+            <div id="lineChart"></div>
+          </div>
+
+          <div class="container line-container">
+            <div id="growthChart"></div>
+          </div>
+
+          <div class="container lollipop-container">
+            <div id="lollipopChart"></div>
+            <div class="legend"><div><div class="key key-circle" style="background-color:#F2645A"></div>Spending</div><div><div class="key key-circle" style="background-color:#007CE1"></div>Commitments</div></div>
+          </div>
+
+          <div class="container bar-container">
+            <div id="barChart"></div>
+          </div>
+
+          <div class="container bar-container">
+            <div id="healthChart"></div>
+          </div>
+
         </div>
       </div>
     </main>
@@ -41,6 +63,7 @@
       for(h=0;h<k.length;h++)e(d,k[h]);a._i.push([b,c,f])};a.__SV=1.2;b=e.createElement("script");b.type="text/javascript";b.async=!0;b.src="undefined"!==typeof MIXPANEL_CUSTOM_LIB_URL?MIXPANEL_CUSTOM_LIB_URL:"file:"===e.location.protocol&&"//cdn.mxpnl.com/libs/mixpanel-2-latest.min.js".match(/^\/\//)?"https://cdn.mxpnl.com/libs/mixpanel-2-latest.min.js":"//cdn.mxpnl.com/libs/mixpanel-2-latest.min.js";c=e.getElementsByTagName("script")[0];c.parentNode.insertBefore(b,c)}})(document,window.mixpanel||[]);
     </script>
     <!-- End Mixpanel -->
+    <script src="https://d3js.org/d3.v4.js"></script>
     <script type='text/javascript' src='js/bundle.min.js'></script>
   </body>
 </html>

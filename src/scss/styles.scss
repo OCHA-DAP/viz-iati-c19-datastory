@@ -16,7 +16,7 @@ html, body {
 
 body {
  	display: flex;
-  	flex-direction: column;
+  flex-direction: column;
 	font-family: 'Source Sans Pro', sans-serif;
 	margin: 0;
 	padding: 0;
@@ -41,6 +41,129 @@ footer {
 	}
 }
 
+.label {
+	font-size: 12px;
+	&.title {
+		font-family: 'Gotham-Bold';
+		font-size: 14px;
+		font-weight: bold;
+	}
+	&.type {
+		text-transform: capitalize;
+	}
+}
+
+.legend {
+	font-size: 12px;
+}
+
+.container {
+	margin: 60px 20px 20px;
+}
+
+.lollipop-container {
+	position: relative;
+	.tick {
+		text {
+			font-family: 'Source Sans Pro', sans-serif;
+			font-size: 12px;
+		}
+	}
+
+	.legend {
+		align-items: flex-start;
+		display: flex;
+		flex-flow: column;
+		font-size: 12px;
+		margin-top: 10px;
+		position: absolute;
+		top: 20px;
+		right: 200px;
+		.key {
+			display: inline-block;
+			margin-right: 6px;
+			&.key-circle {
+				border: 0;
+			  border-radius: 50%;
+			  height: 12px;
+			  width: 12px;
+			}
+		}
+	}
+}
+
+#lineChart,
+#growthChart {
+	// .axis {
+	// 	.tick line {
+	// 		display: none;
+	// 	}
+	// }
+	.y.axis {	
+		path.domain,
+		.tick line {
+			display: none;
+		}
+	}
+}
+
+#healthChart {
+	.y.axis {
+		path.domain,
+		.tick line {
+			display: none;
+		}
+	}
+}
+
+#barChart {
+	.axis {
+		path.domain,
+		.tick line {
+			display: none;
+		}
+	}
+}
+
+.grid line {
+  stroke: lightgrey;
+  stroke-opacity: 0.7;
+  shape-rendering: crispEdges;
+}
+
+.grid path {
+  stroke-width: 0;
+}
+
+.d3-tip {
+  line-height: 1;
+  padding: 6px;
+  background: rgba(0, 0, 0, 0.8);
+  color: #FFF;
+  border-radius: 4px;
+  font-size: 12px;
+  line-height: 16px;
+}
+
+/* Creates a small triangle extender for the tooltip */
+.d3-tip:after {
+  box-sizing: border-box;
+  display: inline;
+  font-size: 10px;
+  width: 100%;
+  line-height: 1;
+  color: rgba(0, 0, 0, 0.8);
+  content: "\25BC";
+  position: absolute;
+  text-align: center;
+}
+
+/* Style northward tooltips specifically */
+.d3-tip.n:after {
+  margin: -2px 0 0 0;
+  top: 100%;
+  left: 0;
+}
 
 @media only screen and (max-width: 767px) {
 	.logos {

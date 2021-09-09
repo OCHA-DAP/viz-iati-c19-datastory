@@ -362,16 +362,21 @@ $( document ).ready(function() {
     initScroller();
 
     $('mark').on('mouseover', function() {
+      d3.selectAll('.spendingBar')
+        .transition()
+        .duration(300)
+        .attr("fill", "#CCE5F9")
+
       d3.selectAll('#spendingBar'+$(this).attr("id"))
         .transition()
-        .duration(500)
-        .attr("fill", "#F2645A")
+        .duration(300)
+        .attr("fill", "#007CE0")
     });
 
     $('mark').on('mouseout', function() {
-      d3.selectAll('#spendingBar'+$(this).attr("id"))
+      d3.selectAll('.spendingBar')
         .transition()
-        .duration(500)
+        .duration(300)
         .attr("fill", "#007CE0")
     })
   }

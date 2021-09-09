@@ -6,39 +6,97 @@
     <meta name='viewport' content='initial-scale=1,maximum-scale=1,user-scalable=no' />
     <link rel='icon' type='image/png' href='https://data.humdata.org/images/icons/hdx.ico' />
     <link href="https://fonts.googleapis.com/css?family=Source+Sans+Pro&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Open+Sans+Condensed:wght@700&display=swap" rel="stylesheet">
     <link href='css/styles.css' rel='stylesheet' />
   </head>
 
   <body>
 
     <main>
+      <div class='introduction'>
+        <section>
+          <div class='grid-container'>
+            <div class='col-3'>
+              <h1>Visualizing aid response in the IATI Covid-19 Funding Dashboard</h1>
+            </div>
+            <div class='col-9'>
+              <p>In 2020, humanitarian aid donors around the world committed to supporting people and countries in need during the COVID-19 pandemic as part of the first Global Humanitarian Response Plan. The Plan finished in December 2020, but the impact of the pandemic continues.</p>
+
+              <p>The IATI COVID-19 Funding Dashboard  from UNOCHA’s Centre for Humanitarian Data (in partnership with USAID) continues to track financial commitments, spending, and organisation-to-organisation money flows earmarked for the COVID-19 pandemic. The data comes from the International Aid Transparency Initiative (IATI), a global programme to share open data about aid and humanitarian projects, with over 1,300 aid organisations actively participating.</p>
+
+              <p>The data visualised in the dashboard changes from day to day. In this data story, we will share some of the broader discoveries we’ve made about the international COVID-19 aid response, and about how aid organisations share their data via IATI.</p>
+            </div>
+          </div>
+        </section>
+      </div>
+
       <div class='grid-container'>
-        <div class='col-12'>
-          <h1>IATI Data Story</h1>
-          <p>Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium doloremque laudantium, totam rem aperiam, eaque ipsa quae ab illo inventore veritatis et quasi architecto beatae vitae dicta sunt explicabo. Nemo enim ipsam voluptatem quia voluptas sit aspernatur aut odit aut fugit, sed quia consequuntur magni dolores eos qui ratione voluptatem sequi nesciunt.</p>
-
-          <div class="container line-container">
-            <div id="lineChart"></div>
-          </div>
-
-          <div class="container line-container">
-            <div id="growthChart"></div>
-          </div>
-
-          <div class="container lollipop-container">
-            <div id="lollipopChart"></div>
-            <div class="legend"><div><div class="key key-circle" style="background-color:#F2645A"></div>Spending</div><div><div class="key key-circle" style="background-color:#007CE1"></div>Commitments</div></div>
-          </div>
-
-          <div class="container bar-container">
-            <div id="barChart"></div>
-          </div>
-
-          <div class="container bar-container">
-            <div id="healthChart"></div>
-          </div>
-
+        <div class='text-col col-5'>
+          <section class='step' data-chart='1'>
+            <p>IATI released its initial COVID-19 publishing guidance in April 2020.  Immediately, organisations started to use this, flagging their COVID-19-related activities in their IATI data.  Government and multilateral organisations (such as UN agencies) represent a smaller number of publishers, but account for the majority of the funding.  A significant growth has occurred in the number of NGO publishers, possibly linked to their proximity to implementing aid and humanitarian projects.</p>
+            <p>To date, over 200 organisations have published IATI data in relation to COVID-19, with some $100b in Commitments and $65b of Spending, covering over 195 countries.</p>
+          </section>
+          <section class='step' data-chart='2'>
+            <p>IATI publishing organisations share both “commitments” (promises of aid funding) and spending (actual disbursements to other organisations or direct expenditures). We found that for multilaterals (and to a lesser extent, government donors) funding commitments aren’t spread evenly over time, but tend to cluster near the end of each quarter: there are far more likely to be announcements of new major funding commitments at the end of a quarter than in the middle of one.</p>
+            <p>We are also concerned that multilaterals reported more commitments than government donors, when much of their funding comes from those donors — that suggests that many government donors are not publishing their commitments, only their spending.  As expected, the volume of money promised by NGOs was far less.</p>
+          </section>
+          <section class='step' data-chart='3'>
+            <p>When aid organisations publish IATI information about their commitments and spending, they often specify which country or countries each financial transaction is destined for. When we compare the commitments (promises of funding) with the actual spending (disbursements and expenditures), we could begin to see the gaps between what has been promised and delivered in various countries.  The gaps are not evenly distributed — as of August 2021, some countries, like India, have received most of what they have been promised, while others, like Brazil and Egypt, appear to have received virtually none of their promised funding. We are not yet certain to what extent these gaps are real, or just an issue with IATI data quality. These situations will change, as IATI publishers apply updates to their data.</p>
+          </section>
+          <section class='step' data-chart='4'>
+            <p>Aid organisations also earmark the commitments and spending in their IATI data by sector (we grouped the more than 300 detailed sectors into higher-level categories for the dashboard). We found that nearly $9B of the spending was still <mark id='5'>uncategorised</mark>, but among the rest, <mark id='2'>“Health”</mark> was in only third place, behind <mark id='0'>“Other Social Infrastructure & Services”</mark> and <mark id='1'>“Government and Civil Society.”</mark> This allocation points to the complex impacts of the COVID-19 crisis, which go far beyond direct health issues like hospitalisation and vaccination to widespread unemployment and budget shortfalls for infrastructure and public services in vulnerable countries. The IATI data shows that aid organisations are aware of this and are addressing those wider impacts.</p>
+          </section>
+          <section class='step' data-chart='5'>
+            <p>Looking specifically at health-related funding, we see major spikes that likely correspond to donor commitments for vaccination research initially, and later, vaccination programmes in vulnerable countries; however, since there is no sector code specifically for vaccination, IATI data does not allow close monitoring of vaccine-related spending; it merely suggests that there might be something worth examining more closely through other sources. The spikes may also be influenced by the bias towards end-of-quarter reporting that we noted in discovery #2.</p>
+          </section>
+          <section class='step' data-chart='6'>
+            <p>IATI data should list which organisations were involved in any transaction — who provided incoming commitments and funding, and what organisations are the recipients of outgoing commitments and disbursements. However, we found that the data is incomplete: many IATI publishing organisations do not list their partners, and many of those partners do not yet publish using IATI.</p>
+            <p>For some organisations, as with this example of Cordaid (a Netherlands NGO), it’s possible to see both the incoming and outgoing partners for spending, but that’s rare.  Government publishers, of course, report mainly outgoing funding. But in all cases, it’s difficult to reconcile the two sides of reported money transfers among organisations, because many IATI publishers cite only recipients of outgoing funds, while others cite only providers of incoming funds.</p>
+            <p>Often, organisations were only described by name, rather than using a shared and unique reference code, and this presented significant work to try and match entities. While IATI data gives us unique insights into the sectors and countries where money is going during the global COVID-19 pandemic, and how well organisations are meeting their commitments, there is still a lot of work to be done before it can help us with accountability for transactions among aid organisations.</p>
+          </section>
         </div>
+        <div class='visual-col col-7'>
+          <div class='container line-container' id='chart1'>
+            <div id='lineChart'></div>
+          </div>
+
+          <div class='container line-container' id='chart2'>
+            <div id='growthChart'></div>
+          </div>
+
+          <div class='container lollipop-container' id='chart3'>
+            <div id='lollipopChart'></div>
+            <div class='legend'><div><div class='key key-circle' style='background-color:#F2645A'></div>Spending</div><div><div class='key key-circle' style='background-color:#007CE1'></div>Commitments</div></div>
+          </div>
+
+          <div class='container bar-container' id='chart4'>
+            <div id='barChart'></div>
+          </div>
+
+          <div class='container bar-container' id='chart5'>
+            <div id='healthChart'></div>
+          </div>
+
+          <div class='container bar-container' id='chart6'>
+            <div id='sankeyChart'></div>
+          </div>
+        </div>
+
+        <div class='conclusion col-12'>
+          <section>
+            <p>Aid organisations use IATI to provide extensive, sometimes near-real-time data about the funding they’re providing for the global COVID-19 response. The IATI data has issues, and we need to use care when interpreting it, but it points the way to topics that need further investigation:</p>
+
+            <ul>
+              <li>some countries appear to be receiving little of the money that’s been promised to them</li>
+              <li>funding commitments align more closely with aid-organisations’ fiscal quarters than with developments in the crisis itself, and 
+              <li>funding is broadening out into other sectors than Health.</li>
+            </ul>
+
+            <p>The UNOCHA Centre for Humanitarian Data updates the IATI COVID-19 Funding Dashboard every night with new data from IATI publishers, and we encourage you to visit often to see how the funding picture for the crisis is changing.</p>
+            <p>If you have any questions, or want to report any issues, please get in touch with us at XXX@humdata.org.</p>
+          </section>
+        </div>
+
       </div>
     </main>
 
@@ -63,6 +121,8 @@
       for(h=0;h<k.length;h++)e(d,k[h]);a._i.push([b,c,f])};a.__SV=1.2;b=e.createElement("script");b.type="text/javascript";b.async=!0;b.src="undefined"!==typeof MIXPANEL_CUSTOM_LIB_URL?MIXPANEL_CUSTOM_LIB_URL:"file:"===e.location.protocol&&"//cdn.mxpnl.com/libs/mixpanel-2-latest.min.js".match(/^\/\//)?"https://cdn.mxpnl.com/libs/mixpanel-2-latest.min.js":"//cdn.mxpnl.com/libs/mixpanel-2-latest.min.js";c=e.getElementsByTagName("script")[0];c.parentNode.insertBefore(b,c)}})(document,window.mixpanel||[]);
     </script>
     <!-- End Mixpanel -->
+    <script src="//cdnjs.cloudflare.com/ajax/libs/ScrollMagic/2.0.7/ScrollMagic.min.js"></script>
+    <script src="//cdnjs.cloudflare.com/ajax/libs/ScrollMagic/2.0.7/plugins/debug.addIndicators.min.js"></script>
     <script src="https://d3js.org/d3.v4.js"></script>
     <script type='text/javascript' src='js/bundle.min.js'></script>
   </body>

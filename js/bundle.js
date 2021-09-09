@@ -350,7 +350,7 @@ function hxlProxyToJSON(input){
 }
 $( document ).ready(function() {
   let isMobile = $(window).width()<600? true : false;
-  let tooltip;
+  let spendingX;
 
   function init() {
     lineChart();
@@ -358,6 +358,58 @@ $( document ).ready(function() {
     lollipopChart();
     barChart();
     healthChart();
+
+    initScroller();
+
+    $('mark').on('mouseover', function() {
+      d3.selectAll('#spendingBar'+$(this).attr("id"))
+        .transition()
+        .duration(500)
+        .attr("fill", "#F2645A")
+    });
+
+    $('mark').on('mouseout', function() {
+      d3.selectAll('#spendingBar'+$(this).attr("id"))
+        .transition()
+        .duration(500)
+        .attr("fill", "#007CE0")
+    })
+  }
+
+  function initScroller() {
+    var controller = new ScrollMagic.Controller();
+    var sections = document.querySelectorAll('.step');
+    for (var i=0; i<sections.length; i++) {
+      new ScrollMagic.Scene({
+        triggerElement: sections[i],
+        triggerHook: 0.5
+      })
+      .on('enter', function(e) {
+        var id = $(e.target.triggerElement()).data('chart');
+        $('.visual-col .container').fadeOut(0);
+        $('#chart'+id).fadeIn(600);
+
+        if (id=='4') {
+          d3.selectAll('.spendingBar')
+            .transition()
+            .duration(800)
+            .ease(d3.easeQuadOut)
+            .attr("width", function(d, i) { console.log(i, d.sum_val); return spendingX(d.sum_val); })
+        }
+      })
+      .on('leave', function(e) {
+        var id = $(e.target.triggerElement()).data('chart');
+        $('.visual-col .container').fadeOut(0);
+        $('#chart'+(id-1)).fadeIn(600);
+
+        if (id=='4') {
+          d3.selectAll('.spendingBar')
+            .attr("width", 0)
+        }
+      })
+      //.addIndicators()
+      .addTo(controller);
+    }
   }
 
   function formatValue(value) {
@@ -609,20 +661,24 @@ $( document ).ready(function() {
             .on('mouseout', tool_tip.hide);
 
         //legend
-        var legend = svg.selectAll('.legend-item')
-          .data(sumstat)
-          .enter().append('g')
-          .attr('class', 'legend');
+        var legend = svg.append('g')
+          .attr('class', 'legend')
+          .attr("transform",
+              "translate(" + 10 + ",10)");
 
-        legend.append('rect')
-          .attr('x', width + 10)
+        var legendItem = legend.selectAll('.legend-item')
+          .data(sumstat)
+          .enter().append('g');
+
+        legendItem.append('rect')
+          .attr('x', 0)
           .attr('y', function(d, i) { return i * 18; })
           .attr('width', 10)
           .attr('height', 10)
           .style('fill', function(d) { return color(d.key); });
 
-        legend.append('text')
-          .attr('x', width + 24)
+        legendItem.append('text')
+          .attr('x', 14)
           .attr('y', function(d, i) { return (i * 18) + 9; })
           .text(function(d) { return d.key; });
       }
@@ -727,7 +783,7 @@ $( document ).ready(function() {
             .attr("stroke-width", 1.5)
             .attr("d", function(d){
               return d3.line()
-                //.curve(d3.curveCatmullRom)
+                .curve(d3.curveCatmullRom)
                 .x(function(d) { return x(d.date); })
                 .y(function(d) { return y(+d.value); })
                 (d.values)
@@ -745,26 +801,29 @@ $( document ).ready(function() {
             .on('mouseout', tool_tip.hide);
 
         //legend
-        var legend = svg.selectAll('.legend-item')
-          .data(sumstat)
-          .enter().append('g')
-          .attr('class', 'legend');
+        var legend = svg.append('g')
+          .attr('class', 'legend')
+          .attr("transform",
+              "translate(" + (width-180) + ",10)");
 
-        legend.append('rect')
-          .attr('x', width + 10)
+        var legendItem = legend.selectAll('.legend-item')
+          .data(sumstat)
+          .enter().append('g');
+
+        legendItem.append('rect')
+          .attr('x', 0)
           .attr('y', function(d, i) { return i * 18; })
           .attr('width', 10)
           .attr('height', 10)
           .style('fill', function(d) { return color(d.key); });
 
-        legend.append('text')
-          .attr('x', width + 24)
+        legendItem.append('text')
+          .attr('x', 14)
           .attr('y', function(d, i) { return (i * 18) + 9; })
           .text(function(d) { return d.key; });
       }
     )
   }
-
 
   function barChart() {
     var margin = {top: 30, right: 190, bottom: 50, left: 200},
@@ -802,13 +861,13 @@ $( document ).ready(function() {
     d3.csv("data/g5_sector_spend.csv", function(data) {
 
       //x axis
-      var x = d3.scaleLinear()
+      spendingX = d3.scaleLinear()
         .domain([0, d3.max(data, d => +d.sum_val)])
         .range([ 0, width]);
       svg.append("g")
         .attr("class", "x axis")
         .attr("transform", "translate(0," + height + ")")
-        .call(d3.axisBottom(x)
+        .call(d3.axisBottom(spendingX)
           .ticks(5)
           .tickFormat(formatValue)
         )
@@ -824,7 +883,7 @@ $( document ).ready(function() {
       //y gridlines
       svg.append("g")     
         .attr("class", "grid")
-        .call(make_x_gridlines(x)
+        .call(make_x_gridlines(spendingX)
           .tickSize(height)
           .tickFormat("")
         )
@@ -843,11 +902,13 @@ $( document ).ready(function() {
         .data(data)
         .enter()
         .append("rect")
-        .attr("x", x(0) )
+        .attr("x", spendingX(0) )
         .attr("y", function(d) { return y(d.Sector); })
-        .attr("width", function(d) { return x(d.sum_val); })
+        .attr("width", 0)
         .attr("height", y.bandwidth() )
         .attr("fill", "#007CE1")
+        .attr("class", "spendingBar")
+        .attr("id", function(d, i) { return "spendingBar" + i; })
         .on('mouseover', tool_tip.show)
         .on('mouseout', tool_tip.hide);
     })

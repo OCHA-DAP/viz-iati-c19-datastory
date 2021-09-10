@@ -671,8 +671,17 @@ $( document ).ready(function() {
           .attr("transform",
               "translate(" + 10 + ",10)");
 
+        //sort legend items
+        var legendArray = [];
+        sumstat.forEach(function(stat) {
+          var max = d3.max(stat.values, d => +d.value);
+          var obj = {key: stat.key, val: max};
+          legendArray.push(obj);
+        });
+        legendArray.sort((a,b) => (a.val < b.val) ? 1 : ((b.val < a.val) ? -1 : 0));
+
         var legendItem = legend.selectAll('.legend-item')
-          .data(sumstat)
+          .data(legendArray)
           .enter().append('g');
 
         legendItem.append('rect')
@@ -811,8 +820,16 @@ $( document ).ready(function() {
           .attr("transform",
               "translate(" + (width-180) + ",10)");
 
+        //sort legend
+        var legendArray = [];
+        sumstat.forEach(function(stat) {
+          var max = d3.max(stat.values, d => +d.value);
+          legendArray.push( {key: stat.key, val: max} );
+        });
+        legendArray.sort((a,b) => (a.val < b.val) ? 1 : ((b.val < a.val) ? -1 : 0));
+
         var legendItem = legend.selectAll('.legend-item')
-          .data(sumstat)
+          .data(legendArray)
           .enter().append('g');
 
         legendItem.append('rect')

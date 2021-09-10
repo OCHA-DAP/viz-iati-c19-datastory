@@ -391,7 +391,7 @@ $( document ).ready(function() {
       })
       .on('enter', function(e) {
         var id = $(e.target.triggerElement()).data('chart');
-        $('.visual-col .container').fadeOut(0);
+        $('.visual-col .container').clearQueue().fadeOut(0);
         $('#chart'+id).fadeIn(600);
 
         if (id=='4') {
@@ -399,12 +399,12 @@ $( document ).ready(function() {
             .transition()
             .duration(800)
             .ease(d3.easeQuadOut)
-            .attr("width", function(d, i) { console.log(i, d.sum_val); return spendingX(d.sum_val); })
+            .attr("width", function(d, i) { return spendingX(d.sum_val); })
         }
       })
       .on('leave', function(e) {
         var id = $(e.target.triggerElement()).data('chart');
-        $('.visual-col .container').fadeOut(0);
+        $('.visual-col .container').clearQueue().fadeOut(0);
         $('#chart'+(id-1)).fadeIn(600);
 
         if (id=='4') {
@@ -590,7 +590,7 @@ $( document ).ready(function() {
           .attr("x", 0)
           .attr("y", 0 - margin.top)
           .attr("dy", ".75em")
-          .text("Growth in IATI Publishing Over Time");
+          .text("Growth in IATI Covid-19 Publishing Over Time");
 
         //x axis
         var x = d3.scaleLinear()

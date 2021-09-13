@@ -1101,6 +1101,14 @@ body {
 main {
   flex: 1; }
 
+a,
+a:visited {
+  color: #F2645A;
+  text-decoration: none; }
+  a:hover,
+  a:visited:hover {
+    text-decoration: underline; }
+
 p {
   font-size: 16px;
   line-height: 26px; }
@@ -1116,9 +1124,33 @@ section {
   padding: 0 20px; }
 
 footer {
-  background-color: #353535;
-  color: #FFF;
-  padding: 20px 20px 10px; }
+  border-top: 1px solid #888;
+  color: #505050;
+  margin-top: 40px;
+  padding: 10px 0 10px;
+  width: 100%; }
+  footer p {
+    font-size: 13px;
+    line-height: 20px;
+    padding: 0 20px; }
+  footer .footer-logos {
+    align-items: center;
+    display: flex;
+    margin: 30px 0 20px; }
+    footer .footer-logos img {
+      margin-left: 30px; }
+  footer .inner {
+    display: flex;
+    flex-flow: row;
+    margin: 0 auto;
+    padding: 0 20px;
+    width: 1170px; }
+    footer .inner .left {
+      width: 60%; }
+    footer .inner .right {
+      padding-top: 15px;
+      text-align: right;
+      width: 40%; }
 
 mark {
   background-color: #EEE;
@@ -1133,11 +1165,6 @@ mark {
     top: 25%;
     transform: translateY(-25%); }
 
-.conclusion {
-  margin-bottom: 50px; }
-  .conclusion section {
-    min-height: auto; }
-
 .visual-col {
   height: 100vh;
   position: relative; }
@@ -1146,12 +1173,6 @@ mark {
     position: fixed;
     top: 50%;
     transform: translateY(-50%); }
-
-.logos img {
-  margin-right: 40px;
-  margin-bottom: 0;
-  vertical-align: top;
-  width: auto; }
 
 .label {
   font-size: 12px; }

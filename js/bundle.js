@@ -351,6 +351,7 @@ function hxlProxyToJSON(input){
 $( document ).ready(function() {
   let isMobile = $(window).width()<600? true : false;
   let spendingX;
+  let animComplete = false;
 
   function init() {
     lineChart();
@@ -362,22 +363,26 @@ $( document ).ready(function() {
     initScroller();
 
     $('mark').on('mouseover', function() {
-      d3.selectAll('.spendingBar')
-        .transition()
-        .duration(300)
-        .attr("fill", "#CCE5F9")
+      if (animComplete) {
+        d3.selectAll('.spendingBar')
+          .transition()
+          .duration(300)
+          .attr("fill", "#CCE5F9")
 
-      d3.selectAll('#spendingBar'+$(this).attr("id"))
-        .transition()
-        .duration(300)
-        .attr("fill", "#007CE0")
+        d3.selectAll('#spendingBar'+$(this).attr("id"))
+          .transition()
+          .duration(300)
+          .attr("fill", "#007CE0")
+      }
     });
 
     $('mark').on('mouseout', function() {
-      d3.selectAll('.spendingBar')
-        .transition()
-        .duration(300)
-        .attr("fill", "#007CE0")
+      if (animComplete) {
+        d3.selectAll('.spendingBar')
+          .transition()
+          .duration(300)
+          .attr("fill", "#007CE0")
+      }
     })
   }
 
@@ -390,9 +395,10 @@ $( document ).ready(function() {
         triggerHook: 0.5
       })
       .on('enter', function(e) {
+        animComplete = false;
         var id = $(e.target.triggerElement()).data('chart');
-        $('.visual-col .container').clearQueue().fadeOut(0);
-        $('#chart'+id).fadeIn(600);
+        $('.visual-col .container').fadeOut(0);
+        $('#chart'+id).clearQueue().fadeIn(600);
 
         if (id=='4') {
           d3.selectAll('.spendingBar')
@@ -400,19 +406,49 @@ $( document ).ready(function() {
             .duration(800)
             .ease(d3.easeQuadOut)
             .attr("width", function(d, i) { return spendingX(d.sum_val); })
+            .on("end", function(d, i) {
+              if (i==9) {
+                animComplete = true;
+              }
+            });
+        }
+        if (id=='5') {
+          var path = d3.selectAll('#healthLine')
+          if (path!=null) {
+            var pathLength = path.node().getTotalLength();
+            path
+              .attr('stroke-dashoffset', pathLength)
+              .attr('stroke-dasharray', pathLength)
+              .transition()
+                .duration(1500)
+                .delay(800)
+                .ease(d3.easeLinear)
+                .attr('stroke-dashoffset', 0);
+
+            d3.selectAll('.healthDot')
+              .transition()
+                .duration(200)
+                .delay(function(d, i) { return i*50; })
+                .ease(d3.easeLinear)
+                  .attr('opacity', 1)
+          }
         }
       })
       .on('leave', function(e) {
         var id = $(e.target.triggerElement()).data('chart');
-        $('.visual-col .container').clearQueue().fadeOut(0);
-        $('#chart'+(id-1)).fadeIn(600);
+        $('.visual-col .container').fadeOut(0);
+        $('#chart'+(id-1)).clearQueue().fadeIn(600);
 
         if (id=='4') {
           d3.selectAll('.spendingBar')
             .attr("width", 0)
         }
+        if (id=='5') {
+          d3.selectAll('.healthDot')
+            .attr('opacity', 0)
+        }
       })
-      //.addIndicators()
+      .addIndicators()
       .addTo(controller);
     }
   }
@@ -717,16 +753,19 @@ $( document ).ready(function() {
     var tool_tip = d3.tip()
         .attr("class", "d3-tip")
         .offset([-8, 0])
-        .html(function(d) { return d.name + '<br>' + d3.timeFormat('%b %Y')(d.date) + ': ' + d.value; });
+        .html(function(d) { return d.name + '<br>' + d3.timeFormat('%b %Y')(d.date) + ': ' + formatValue(d.value); });
       svg.call(tool_tip);
 
     //get data
-    d3.csv("data/g2_commitments.csv", 
+    d3.csv("https://proxy.hxlstandard.org/data/7a640c.csv", 
       function(d) {
-        return { date: d3.timeParse("%Y-%m-%d")(d.date), value: d.mean_val, name: d['Publisher.Group'] }
+        if (d['Reporting org type']!='Other')
+          return { date: d3.timeParse("%Y-%m")(d['Month']), value: d['Net new commitments'], name: d['Reporting org type'] }
       },
 
       function(data) {
+        data.shift(); //drop first row of headers
+
         //group the data
         var sumstat = d3.nest()
           .key(function(d) { return d.name; })
@@ -761,6 +800,7 @@ $( document ).ready(function() {
           .attr("class", "y axis")
           .call(d3.axisLeft(y)
             .ticks(5)
+            .tickFormat(formatValue)
           );
 
         //y gridlines
@@ -779,20 +819,21 @@ $( document ).ready(function() {
           .attr("y", -70)
           .attr("dy", ".75em")
           .attr("transform", "rotate(-90)")
-          .text("Commitments in millions (USD)");
+          .text("Commitments (USD)");
 
         //colors
         var res = sumstat.map(function(d){ return d.key })
         var color = d3.scaleOrdinal()
           .domain(res)
-          .range(['#418FDE', '#E56A54', '#ECA154'])
-
+          .range(['#418FDE', '#E56A54', '#ECA154', '#E2E868'])
         //line
         svg.selectAll(".line")
           .data(sumstat)
           .enter()
           .append("path")
+            .attr("class", "orgLine")
             .attr("fill", "none")
+            .attr("id", function(d, i) { return "orgLine"+i; })
             .attr("stroke", function(d){ return color(d.key) })
             .attr("stroke-width", 1.5)
             .attr("d", function(d){
@@ -801,18 +842,61 @@ $( document ).ready(function() {
                 .x(function(d) { return x(d.date); })
                 .y(function(d) { return y(+d.value); })
                 (d.values)
-            })
+            });
+
+        var paths = d3.selectAll(".orgLine")
+        paths._groups[0].forEach(function(path, index) {
+          var pathLength = path.getTotalLength();
+          d3.selectAll('#orgLine'+index)
+            .attr('stroke-dashoffset', pathLength)
+            .attr('stroke-dasharray', pathLength)
+            .transition()
+            .duration(2000)
+            .ease(d3.easeLinear)
+            .attr('stroke-dashoffset', 0);
+        });
 
         //dots
-        svg.selectAll("dot")
+        var dots = svg.selectAll("dot")
             .data(data)
           .enter().append("circle")
             .attr("r", 3)
+            .attr("opacity", 0)
             .attr("fill", function(d){ return color(d.name) })
             .attr("cx", function(d) { return x(d.date); })
             .attr("cy", function(d) { return y(d.value); })
             .on('mouseover', tool_tip.show)
             .on('mouseout', tool_tip.hide);
+
+        dots
+          .transition()
+          .delay(2000)
+            .duration(300)
+            .ease(d3.easeLinear)
+              .attr("opacity", 1)
+
+        // //curtain for animation
+        // var curtain = svg.append('rect')
+        //   .attr('x', -(width+3))
+        //   .attr('y', -(height+3))
+        //   .attr('height', height+6)
+        //   .attr('width', width+6)
+        //   .attr('class', 'curtain')
+        //   .attr('transform', 'rotate(180)')
+        //   .style('fill', '#FFF');
+
+        // /* Create a shared transition for anything we're animating */
+        // var t = svg.transition()
+        //   .delay(750)
+        //   .duration(6000)
+        //   .ease(d3.easeLinear)
+        //   .on('end', function() {
+
+        //   });
+        
+        // t.select('rect.curtain')
+        //   .attr('width', 0);
+
 
         //legend
         var legend = svg.append('g')
@@ -1015,19 +1099,20 @@ $( document ).ready(function() {
           .text("Spending in millions (USD)");
 
         //line
-        svg.append("path")
+        var path = svg.append("path")
           .datum(data)
           .attr("fill", "none")
           .attr("stroke", "#007CE1")
           .attr("stroke-width", 1.5)
+          .attr("id", "healthLine")
           .attr("d", d3.line()
             .curve(d3.curveCatmullRom)
             .x(function(d) { return x(d.date) })
             .y(function(d) { return y(d.value) })
-            )
+          )
 
         //dots
-        svg
+        var dots = svg
           .append("g")
           .selectAll("dot")
           .data(data)
@@ -1037,6 +1122,8 @@ $( document ).ready(function() {
             .attr("cy", function(d) { return y(d.value) } )
             .attr("r", 3)
             .attr("fill", "#007CE1")
+            .attr("class", "healthDot")
+            .attr("opacity", 0)
             .on('mouseover', tool_tip.show)
             .on('mouseout', tool_tip.hide);
     })

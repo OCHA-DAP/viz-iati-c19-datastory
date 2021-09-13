@@ -448,7 +448,7 @@ $( document ).ready(function() {
             .attr('opacity', 0)
         }
       })
-      .addIndicators()
+      //.addIndicators()
       .addTo(controller);
     }
   }

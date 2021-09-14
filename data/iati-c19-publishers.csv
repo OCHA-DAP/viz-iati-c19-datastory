@@ -1,0 +1,70 @@
+Date,Publisher Group,SUM of # Publishers,SUM of # Activities,SUM of # Transactions
+2020-05-28,Government & Public Sector,17,187,612
+2020-05-28,Multilateral,11,618,26080
+2020-05-28,Non Governmental Organisation,31,90,762
+2020-05-28,Other,6,12,80
+2020-06-15,Government & Public Sector,19,217,675
+2020-06-15,Multilateral,15,1119,46230
+2020-06-15,Non Governmental Organisation,34,103,847
+2020-06-15,Other,6,12,80
+2020-07-15,Government & Public Sector,23,1013,4118
+2020-07-15,Multilateral,20,867,18849
+2020-07-15,Non Governmental Organisation,38,139,2901
+2020-07-15,Other,6,15,371
+2020-08-15,Government & Public Sector,26,2268,7286
+2020-08-15,Multilateral,23,1346,30885
+2020-08-15,Non Governmental Organisation,56,912,9505
+2020-08-15,Other,12,34,2515
+2020-09-23,Government & Public Sector,26,2325,8379
+2020-09-23,Multilateral,22,1419,18519
+2020-09-23,Non Governmental Organisation,36,762,3689
+2020-09-23,Other,6,16,345
+2020-10-12,Government & Public Sector,27,2428,8747
+2020-10-12,Multilateral,22,1536,19945
+2020-10-12,Non Governmental Organisation,39,780,3859
+2020-10-12,Other,7,72,641
+2020-11-15,Government & Public Sector,27,3252,33582
+2020-11-15,Multilateral,24,1729,23799
+2020-11-15,Non Governmental Organisation,53,828,5524
+2020-11-15,Other,9,73,1070
+2020-12-15,Government & Public Sector,29,3142,13610
+2020-12-15,Multilateral,25,1774,31509
+2020-12-15,Non Governmental Organisation,59,856,6041
+2020-12-15,Other,9,74,801
+2021-01-13,Government & Public Sector,28,4403,18265
+2021-01-13,Multilateral,24,1783,32710
+2021-01-13,Non Governmental Organisation,67,1548,8104
+2021-01-13,Other,10,76,754
+2021-02-15,Government & Public Sector,29,4984,20704
+2021-02-15,Multilateral,26,2078,35971
+2021-02-15,Non Governmental Organisation,77,1683,9715
+2021-02-15,Other,13,86,1098
+2021-03-15,Government & Public Sector,30,5056,24382
+2021-03-15,Multilateral,26,2136,38941
+2021-03-15,Non Governmental Organisation,84,1765,11764
+2021-03-15,Other,13,89,1246
+2021-04-15,Government & Public Sector,31,6113,29937
+2021-04-15,Multilateral,29,2441,36582
+2021-04-15,Non Governmental Organisation,107,2516,24042
+2021-04-15,Other,16,113,2141
+2021-05-16,Government & Public Sector,33,6623,37839
+2021-05-16,Multilateral,29,2703,53135
+2021-05-16,Non Governmental Organisation,111,2636,25653
+2021-05-16,Other,17,119,2581
+2021-06-15,Government & Public Sector,34,7030,40727
+2021-06-15,Multilateral,29,2821,58643
+2021-06-15,Non Governmental Organisation,114,2677,26679
+2021-06-15,Other,17,474,3575
+2021-07-14,Government & Public Sector,35,7431,43970
+2021-07-14,Multilateral,31,3005,65320
+2021-07-14,Non Governmental Organisation,117,2733,26918
+2021-07-14,Other,15,537,4059
+2021-08-16,Government & Public Sector,35,7558,34873
+2021-08-16,Multilateral,32,3166,44502
+2021-08-16,Non Governmental Organisation,122,3525,18772
+2021-08-16,Other,18,559,2767
+2021-09-13,Government & Public Sector,36,7781,48859
+2021-09-13,Multilateral,33,3366,75220
+2021-09-13,Non Governmental Organisation,124,3666,30418
+2021-09-13,Other,23,602,9999
+Grand Total,,2378,135900,1282721

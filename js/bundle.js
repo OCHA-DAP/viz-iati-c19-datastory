@@ -321,33 +321,6 @@ d3.tip = function() {
 
   return tip
 };
-function hxlProxyToJSON(input){
-    var output = [];
-    var keys=[]
-    input.forEach(function(e,i){
-        if(i==0){
-            e.forEach(function(e2,i2){
-                var parts = e2.split('+');
-                var key = parts[0]
-                if(parts.length>1){
-                    var atts = parts.splice(1,parts.length);
-                    atts.sort();                    
-                    atts.forEach(function(att){
-                        key +='+'+att
-                    });
-                }
-                keys.push(key);
-            });
-        } else {
-            var row = {};
-            e.forEach(function(e2,i2){
-                row[keys[i2]] = e2;
-            });
-            output.push(row);
-        }
-    });
-    return output;
-}
 $( document ).ready(function() {
   let isMobile = $(window).width()<600? true : false;
   let spendingX;
@@ -405,7 +378,7 @@ $( document ).ready(function() {
             .transition()
             .duration(800)
             .ease(d3.easeQuadOut)
-            .attr("width", function(d, i) { return spendingX(d.sum_val); })
+            .attr("width", function(d, i) { return spendingX(d['Net new commitments']); })
             .on("end", function(d, i) {
               if (i==9) {
                 animComplete = true;
@@ -420,7 +393,7 @@ $( document ).ready(function() {
               .attr('stroke-dashoffset', pathLength)
               .attr('stroke-dasharray', pathLength)
               .transition()
-                .duration(1500)
+                .duration(1000)
                 .delay(800)
                 .ease(d3.easeLinear)
                 .attr('stroke-dashoffset', 0);
@@ -468,124 +441,6 @@ $( document ).ready(function() {
   }
 
 
-  function lollipopChart() {
-    var margin = {top: 30, right: 190, bottom: 40, left: 90},
-        width = 750 - margin.left - margin.right,
-        height = 350 - margin.top - margin.bottom;
-
-    //init svg
-    var svg = d3.select("#lollipopChart")
-      .append("svg")
-        .attr("width", width + margin.left + margin.right)
-        .attr("height", height + margin.top + margin.bottom)
-      .append("g")
-        .attr("transform",
-              "translate(" + margin.left + "," + margin.top + ")");
-
-    //init tooltip
-    var tool_tip = d3.tip()
-      .attr("class", "d3-tip")
-      .offset([-8, 0])
-      .html(function(d) { 
-        var type = $(this).attr('class')
-        return "<span class='label type'>" + type + '</span>: ' + formatValue(d[type]); 
-      });
-    svg.call(tool_tip);
-
-    //get data
-    d3.csv("data/g3_deficit.csv", function(data) {
-      //sort by deficit size
-      data = data.sort((a, b) =>
-        a.deficit > b.deficit ? -1 : 1
-      )
-
-      //chart title
-      svg.append("text")
-        .attr("class", "label title")
-        .attr("text-anchor", "left")
-        .attr("x", 0)
-        .attr("y", 0 - margin.top)
-        .attr("dy", ".75em")
-        .text("Commitments and Spending Deficits by Country");
-
-      //x axis
-      var x = d3.scaleLinear()
-        .domain([0, d3.max(data, d => d.commitments)])
-        .range([0, width]);
-      svg.append("g")
-        .attr("transform", "translate(0," + height + ")")
-        .call(d3.axisBottom(x)
-          .tickFormat(function(d, i) {
-            return i % 3 === 0 ? formatValue(d) : null; 
-          })
-        )
-
-      //x axis label
-      svg.append("text")
-        .attr("class", "x label")
-        .attr("text-anchor", "middle")
-        .attr("x", width/2)
-        .attr("y", height + margin.bottom)
-        .text("(USD)");
-
-      //y axis
-      var y = d3.scaleBand()
-        .range([0, height])
-        .domain(data.map(function(d) { return d.country; }))
-        .padding(1);
-      svg.append("g")
-        .call(d3.axisLeft(y))
-
-      //y axis label
-      svg.append("text")
-        .attr("class", "y label")
-        .attr("text-anchor", "middle")
-        .attr("x", -height/2)
-        .attr("y", -margin.left)
-        .attr("dy", ".75em")
-        .attr("transform", "rotate(-90)")
-        .text("Recipient country");
-
-      //line
-      svg.selectAll("deficitLine")
-        .data(data)
-        .enter()
-        .append("line")
-          .attr("x1", function(d) { return x(d.spending); })
-          .attr("x2", function(d) { return x(d.commitments); })
-          .attr("y1", function(d) { return y(d.country); })
-          .attr("y2", function(d) { return y(d.country); })
-          .attr("stroke", "#CCC")
-          .attr("stroke-width", "1px")
-
-      //spending
-      svg.selectAll("spendingCircle")
-        .data(data)
-        .enter()
-        .append("circle")
-          .attr("class", "spending")
-          .attr("cx", function(d) { return x(d.spending); })
-          .attr("cy", function(d) { return y(d.country); })
-          .attr("r", "6")
-          .style("fill", "#F2645A")
-          .on('mouseover', tool_tip.show)
-          .on('mouseout', tool_tip.hide);
-
-      //commitments
-      svg.selectAll("commitmentsCircle")
-        .data(data)
-        .enter()
-        .append("circle")
-          .attr("class", "commitments")
-          .attr("cx", function(d) { return x(d.commitments); })
-          .attr("cy", function(d) { return y(d.country); })
-          .attr("r", "6")
-          .style("fill", "#007CE1")
-          .on('mouseover', tool_tip.show)
-          .on('mouseout', tool_tip.hide);
-    })
-  }
-
   function lineChart() {
     var margin = {top: 30, right: 190, bottom: 40, left: 90},
         width = 750 - margin.left - margin.right,
@@ -607,10 +462,13 @@ $( document ).ready(function() {
         .html(function(d) { return d.name + '<br>' + d3.timeFormat('%b %Y')(d.date) + ': ' + d.value; });
       svg.call(tool_tip);
 
+
     //get data
-    d3.csv("data/g1_count_publishers.csv", 
+    d3.csv("data/iati-c19-publishers.csv", 
       function(d) {
-        return { date: d3.timeParse("%m/%d/%Y")(d.Date), value: d.values, name: d['Publisher.Group'] }
+        if (d['Publisher Group']!='') {
+          return { date: d3.timeParse("%Y-%m-%d")(d.Date), value: d['SUM of # Publishers'], name: d['Publisher Group'] }
+        }
       },
 
       function(data) {
@@ -638,6 +496,7 @@ $( document ).ready(function() {
           .call(d3.axisBottom(x)
             .ticks(5)
             .tickFormat(d3.timeFormat('%b %Y'))
+            .tickSizeOuter(0)
           );
 
         //y axis
@@ -672,7 +531,7 @@ $( document ).ready(function() {
         var res = sumstat.map(function(d){ return d.key }) // list of group names
         var color = d3.scaleOrdinal()
           .domain(res)
-          .range(['#418FDE', '#E56A54', '#ECA154'])
+          .range(['#418FDE', '#E56A54', '#ECA154', '#E2E868'])
 
         //line
         svg.selectAll(".line")
@@ -757,10 +616,9 @@ $( document ).ready(function() {
       svg.call(tool_tip);
 
     //get data
-    d3.csv("https://proxy.hxlstandard.org/data/7a640c.csv", 
+    d3.csv('data/iati-c19-commitments-by-org-type.csv', 
       function(d) {
-        if (d['Reporting org type']!='Other')
-          return { date: d3.timeParse("%Y-%m")(d['Month']), value: d['Net new commitments'], name: d['Reporting org type'] }
+        return { date: d3.timeParse("%Y-%m")(d['Month']), value: d['Net new commitments'], name: d['Reporting org type'] }
       },
 
       function(data) {
@@ -790,6 +648,7 @@ $( document ).ready(function() {
           .call(d3.axisBottom(x)
             .ticks(5)
             .tickFormat(d3.timeFormat('%b %Y'))
+            .tickSizeOuter(0)
           );
 
         //y axis
@@ -826,6 +685,7 @@ $( document ).ready(function() {
         var color = d3.scaleOrdinal()
           .domain(res)
           .range(['#418FDE', '#E56A54', '#ECA154', '#E2E868'])
+          
         //line
         svg.selectAll(".line")
           .data(sumstat)
@@ -875,28 +735,6 @@ $( document ).ready(function() {
             .ease(d3.easeLinear)
               .attr("opacity", 1)
 
-        // //curtain for animation
-        // var curtain = svg.append('rect')
-        //   .attr('x', -(width+3))
-        //   .attr('y', -(height+3))
-        //   .attr('height', height+6)
-        //   .attr('width', width+6)
-        //   .attr('class', 'curtain')
-        //   .attr('transform', 'rotate(180)')
-        //   .style('fill', '#FFF');
-
-        // /* Create a shared transition for anything we're animating */
-        // var t = svg.transition()
-        //   .delay(750)
-        //   .duration(6000)
-        //   .ease(d3.easeLinear)
-        //   .on('end', function() {
-
-        //   });
-        
-        // t.select('rect.curtain')
-        //   .attr('width', 0);
-
 
         //legend
         var legend = svg.append('g')
@@ -931,8 +769,140 @@ $( document ).ready(function() {
     )
   }
 
+
+  function lollipopChart() {
+    var margin = {top: 30, right: 190, bottom: 40, left: 90},
+        width = 750 - margin.left - margin.right,
+        height = 350 - margin.top - margin.bottom;
+
+    //init svg
+    var svg = d3.select("#lollipopChart")
+      .append("svg")
+        .attr("width", width + margin.left + margin.right)
+        .attr("height", height + margin.top + margin.bottom)
+      .append("g")
+        .attr("transform",
+              "translate(" + margin.left + "," + margin.top + ")");
+
+    //init tooltip
+    var tool_tip = d3.tip()
+      .attr("class", "d3-tip")
+      .offset([-8, 0])
+      .html(function(d) {
+        var type = ($(this).attr('class')=='spending') ? 'Net spending' : 'Net commitments';
+        return "<span class='label type'>" + type + '</span>: ' + formatValue(d[type]); 
+      });
+    svg.call(tool_tip);
+
+    //get data
+    d3.csv("data/iati-c19-commitment-spending-by-country.csv", function(data) {
+      data.shift(); //remove headers
+
+      //sort by deficit size
+      data = data.sort((a, b) =>
+        +a['Commitment/spending gap'] > +b['Commitment/spending gap'] ? -1 : 1
+      )
+
+      //get top ten by deficit
+      var chartData = [];
+      data.slice(0, 10).map((d, i) => {
+        if (d['Net commitments']!='' && d['Net spending']!='')
+          chartData.push(d);
+      });
+
+      //chart title
+      svg.append("text")
+        .attr("class", "label title")
+        .attr("text-anchor", "left")
+        .attr("x", 0)
+        .attr("y", 0 - margin.top)
+        .attr("dy", ".75em")
+        .text("Commitments and Spending Deficits by Country");
+
+      //x axis
+      var x = d3.scaleLinear()
+        .domain([0, d3.max(chartData, d => +d['Net commitments'])])
+        .range([0, width]);
+      svg.append("g")
+        .attr("transform", "translate(0," + height + ")")
+        .call(d3.axisBottom(x)
+          .tickFormat(function(d, i) {
+            return i % 2 === 0 ? formatValue(d) : null; 
+          })
+          .tickSizeOuter(0)
+        )
+
+      //x axis label
+      svg.append("text")
+        .attr("class", "x label")
+        .attr("text-anchor", "middle")
+        .attr("x", width/2)
+        .attr("y", height + margin.bottom)
+        .text("(USD)");
+
+      //y axis
+      var y = d3.scaleBand()
+        .range([0, height])
+        .domain(chartData.map(function(d) { return d['Recipient country']; }))
+        .padding(1);
+      svg.append("g")
+        .call(d3.axisLeft(y)
+          .tickSizeOuter(0)
+        )
+
+      //y axis label
+      svg.append("text")
+        .attr("class", "y label")
+        .attr("text-anchor", "middle")
+        .attr("x", -height/2)
+        .attr("y", -margin.left)
+        .attr("dy", ".75em")
+        .attr("transform", "rotate(-90)")
+        .text("Recipient country");
+
+      //line
+      svg.selectAll("deficitLine")
+        .data(chartData)
+        .enter()
+        .append("line")
+          .attr("x1", function(d) { return x(d['Net spending']); })
+          .attr("x2", function(d) { return x(d['Net commitments']); })
+          .attr("y1", function(d) { return y(d['Recipient country']); })
+          .attr("y2", function(d) { return y(d['Recipient country']); })
+          .attr("stroke", "#CCC")
+          .attr("stroke-width", "1px")
+
+      //spending
+      svg.selectAll("spendingCircle")
+        .data(chartData)
+        .enter()
+        .append("circle")
+          .attr("class", "spending")
+          .attr("cx", function(d) { return x(d['Net spending']); })
+          .attr("cy", function(d) { return y(d['Recipient country']); })
+          .attr("r", "6")
+          .style("fill", "#F2645A")
+          .on('mouseover', tool_tip.show)
+          .on('mouseout', tool_tip.hide);
+
+      //commitments
+      svg.selectAll("commitmentsCircle")
+        .data(chartData)
+        .enter()
+        .append("circle")
+          .attr("class", "commitments")
+          .attr("cx", function(d) { return x(d['Net commitments']); })
+          .attr("cy", function(d) { return y(d['Recipient country']); })
+          .attr("r", "6")
+          .style("fill", "#007CE1")
+          .on('mouseover', tool_tip.show)
+          .on('mouseout', tool_tip.hide);
+    })
+  }
+
+
   function barChart() {
-    var margin = {top: 30, right: 190, bottom: 50, left: 200},
+    var margin = {top: 30, right: 190, bottom: 50, left: 260},
         width = 750 - margin.left - margin.right,
         height = 350 - margin.top - margin.bottom;
 
@@ -959,16 +929,25 @@ $( document ).ready(function() {
       .attr("class", "d3-tip")
       .offset([-8, 0])
       .html(function(d) {
-        return d.Sector + ': ' + formatValue(d.sum_val); 
+        return d.Sector + ': ' + formatValue(d['Net new commitments']); 
       });
     svg.call(tool_tip);
 
+
     //get data
-    d3.csv("data/g5_sector_spend.csv", function(data) {
+    d3.csv("data/iati-c19-spending-by-sector.csv", function(data) {
+
+      //remove header and get top ten by spending
+      data.shift();
+      var chartData = [];
+      data.slice(0, 10).map((d, i) => {
+        if (d['Net new commitments']!='')
+          chartData.push(d);
+      });
 
       //x axis
       spendingX = d3.scaleLinear()
-        .domain([0, d3.max(data, d => +d.sum_val)])
+        .domain([0, d3.max(chartData, d => +d['Net new commitments'])])
         .range([ 0, width]);
       svg.append("g")
         .attr("class", "x axis")
@@ -984,7 +963,7 @@ $( document ).ready(function() {
         .attr("text-anchor", "middle")
         .attr("x", width/2)
         .attr("y", height + margin.bottom - 10)
-        .text("Highest Spending in millions (USD)");
+        .text("Highest Spending (USD)");
 
       //y gridlines
       svg.append("g")     
@@ -997,7 +976,7 @@ $( document ).ready(function() {
       //y axis
       var y = d3.scaleBand()
         .range([ 0, height ])
-        .domain(data.map(function(d) { return d.Sector; }))
+        .domain(chartData.map(function(d) { return d.Sector; }))
         .padding(.3);
       svg.append("g")
         .attr("class", "y axis")
@@ -1005,7 +984,7 @@ $( document ).ready(function() {
 
       //bars
       svg.selectAll(".bar")
-        .data(data)
+        .data(chartData)
         .enter()
         .append("rect")
         .attr("x", spendingX(0) )

@@ -1198,8 +1198,8 @@ mark {
     font-size: 12px;
     margin-top: 10px;
     position: absolute;
-    top: 20px;
-    right: 200px; }
+    bottom: 60px;
+    right: 190px; }
     .lollipop-container .legend .key {
       display: inline-block;
       margin-right: 6px; }

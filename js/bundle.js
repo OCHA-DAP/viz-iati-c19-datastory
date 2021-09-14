@@ -393,9 +393,9 @@ $( document ).ready(function() {
               .attr('stroke-dashoffset', pathLength)
               .attr('stroke-dasharray', pathLength)
               .transition()
-                .duration(1000)
-                .delay(800)
-                .ease(d3.easeLinear)
+                .duration(1500)
+                .delay(700)
+                .ease(d3.easeQuadInOut)
                 .attr('stroke-dashoffset', 0);
 
             d3.selectAll('.healthDot')
@@ -1026,17 +1026,20 @@ $( document ).ready(function() {
     var tool_tip = d3.tip()
         .attr("class", "d3-tip")
         .offset([-8, 0])
-        .html(function(d) { return d.name + '<br>' + d3.timeFormat('%b %Y')(d.date) + ': ' + d.value; });
+        .html(function(d) { return d3.timeFormat('%b %Y')(d.date) + ': ' + formatValue(d.value); });
       svg.call(tool_tip);
 
+
     //Read the data
-    d3.csv("data/g5.1_health_timeline.csv",
+    d3.csv("data/iati-c19-health-spending-by-month.csv",
       //format vars
       function(d){
-        return { date: d3.timeParse("%Y-%m-%d")(d.date), value: d.sum_val, name: d.Sector }
+        return { date: d3.timeParse("%Y-%m")(d.Month), value: d['Net new commitments'] }
       },
       
       function(data) {
+        data.shift(); //clear headers
+
         //x axis
         var x = d3.scaleTime()
           .domain(d3.extent(data, function(d) { return d.date; }))
@@ -1057,6 +1060,7 @@ $( document ).ready(function() {
           .attr("class", "y axis")
           .call(d3.axisLeft(y)
             .ticks(5)
+            .tickFormat(formatValue)
           );
 
         //y gridlines
@@ -1075,7 +1079,7 @@ $( document ).ready(function() {
           .attr("y", -margin.left)
           .attr("dy", ".75em")
           .attr("transform", "rotate(-90)")
-          .text("Spending in millions (USD)");
+          .text("Spending (USD)");
 
         //line
         var path = svg.append("path")

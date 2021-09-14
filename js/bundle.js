@@ -531,7 +531,7 @@ $( document ).ready(function() {
         var res = sumstat.map(function(d){ return d.key }) // list of group names
         var color = d3.scaleOrdinal()
           .domain(res)
-          .range(['#418FDE', '#E56A54', '#ECA154', '#E2E868'])
+          .range(['#418FDE', '#E56A54', '#ECA154', '#A4D65E'])
 
         //line
         svg.selectAll(".line")
@@ -684,7 +684,7 @@ $( document ).ready(function() {
         var res = sumstat.map(function(d){ return d.key })
         var color = d3.scaleOrdinal()
           .domain(res)
-          .range(['#418FDE', '#E56A54', '#ECA154', '#E2E868'])
+          .range(['#418FDE', '#E56A54', '#ECA154', '#A4D65E'])
           
         //line
         svg.selectAll(".line")

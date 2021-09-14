@@ -378,12 +378,12 @@ function lollipopChart() {
       .text("Commitments and Spending Deficits by Country");
 
     //x axis
-    var x = d3.scaleLinear()
+    gapX = d3.scaleLinear()
       .domain([0, d3.max(chartData, d => +d['Net commitments'])])
       .range([0, width]);
     svg.append("g")
       .attr("transform", "translate(0," + height + ")")
-      .call(d3.axisBottom(x)
+      .call(d3.axisBottom(gapX)
         .tickFormat(function(d, i) {
           return i % 2 === 0 ? formatValue(d) : null; 
         })
@@ -423,8 +423,9 @@ function lollipopChart() {
       .data(chartData)
       .enter()
       .append("line")
-        .attr("x1", function(d) { return x(d['Net spending']); })
-        .attr("x2", function(d) { return x(d['Net commitments']); })
+        .attr("class", "gapLine")
+        .attr("x1", function(d) { return gapX(d['Net spending']); })
+        .attr("x2", function(d) { return gapX(d['Net commitments']); })
         .attr("y1", function(d) { return y(d['Recipient country']); })
         .attr("y2", function(d) { return y(d['Recipient country']); })
         .attr("stroke", "#CCC")
@@ -436,7 +437,7 @@ function lollipopChart() {
       .enter()
       .append("circle")
         .attr("class", "spending")
-        .attr("cx", function(d) { return x(d['Net spending']); })
+        .attr("cx", function(d) { return gapX(d['Net spending']); })
         .attr("cy", function(d) { return y(d['Recipient country']); })
         .attr("r", "6")
         .style("fill", "#F2645A")
@@ -449,7 +450,7 @@ function lollipopChart() {
       .enter()
       .append("circle")
         .attr("class", "commitments")
-        .attr("cx", function(d) { return x(d['Net commitments']); })
+        .attr("cx", function(d) { return gapX(d['Net commitments']); })
         .attr("cy", function(d) { return y(d['Recipient country']); })
         .attr("r", "6")
         .style("fill", "#007CE1")
@@ -991,7 +992,7 @@ d3.tip = function() {
 
   return tip
 };
-let spendingX;
+let spendingX, gapX;
 let animComplete = false;
 
 $( document ).ready(function() {
@@ -1057,6 +1058,9 @@ $( document ).ready(function() {
         if (id=='2') {
           animOrgLine();
         }
+        if (id=='3') {
+          animGap();
+        }
         if (id=='4') {
           animSpendingBar();
         }
@@ -1074,9 +1078,6 @@ $( document ).ready(function() {
         }
         if (id=='2') {
           resetOrgLine();
-        }
-        if (id=='4') {
-          resetSpendingBar();
         }
         if (id=='5') {
           resetHealthLine();
@@ -1139,8 +1140,25 @@ $( document ).ready(function() {
       .attr('opacity', 0)
   }
 
+  function animGap() {
+    d3.selectAll('.commitments')
+      .attr("cx", function(d) { return gapX(d['Net spending']); })
+      .transition()
+      .duration(800)
+      .ease(d3.easeQuadOut)
+      .attr("cx", function(d) { return gapX(d['Net commitments']); })
+
+    d3.selectAll('.gapLine')
+      .attr("x2", function(d) { return gapX(d['Net spending']); })
+      .transition()
+      .duration(800)
+      .ease(d3.easeQuadOut)
+      .attr("x2", function(d) { return gapX(d['Net commitments']); })
+  }
+
   function animSpendingBar() {
     d3.selectAll('.spendingBar')
+      .attr("width", 0)
       .transition()
       .duration(800)
       .ease(d3.easeQuadOut)
@@ -1152,11 +1170,6 @@ $( document ).ready(function() {
       });
   }
 
-  function resetSpendingBar() {
-    d3.selectAll('.spendingBar')
-      .attr("width", 0)
-  }
-
   function animHealthLine() {    
     var path = d3.selectAll('#healthLine')
     if (path!=null) {
@@ -1165,15 +1178,14 @@ $( document ).ready(function() {
         .attr('stroke-dashoffset', pathLength)
         .attr('stroke-dasharray', pathLength)
         .transition()
-          .duration(1500)
-          .delay(700)
-          .ease(d3.easeQuadInOut)
+          .duration(2000)
+          .ease(d3.easeLinear)
           .attr('stroke-dashoffset', 0);
 
       d3.selectAll('.healthDot')
         .transition()
           .duration(200)
-          .delay(function(d, i) { return i*50; })
+          .delay(function(d, i) { return i*100; })
           .ease(d3.easeLinear)
             .attr('opacity', 1)
     }

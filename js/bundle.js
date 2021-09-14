@@ -357,6 +357,11 @@ $( document ).ready(function() {
           .attr("fill", "#007CE0")
       }
     })
+
+    
+    $('.ocha-services').on('click', function() {
+      $('.ocha-header .dropdown-menu').toggle();
+    });
   }
 
   function initScroller() {

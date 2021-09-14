@@ -1114,9 +1114,20 @@ p {
   line-height: 26px; }
 
 h1 {
-  font-family: 'Open Sans Condensed', sans-serif;
-  font-weight: 700;
+  font-family: 'Gotham-Bold';
+  margin-bottom: 0;
   margin-top: 15px;
+  text-align: right; }
+
+h2 {
+  font-family: 'Gotham-Bold';
+  font-size: 20px; }
+
+h4 {
+  color: #888;
+  font-family: 'Source Sans Pro', sans-serif;
+  font-size: 12px;
+  margin-top: 10px;
   text-align: right; }
 
 section {
@@ -1257,6 +1268,99 @@ mark {
   margin: -2px 0 0 0;
   top: 100%;
   left: 0; }
+
+.ocha-header {
+  background-color: #252525;
+  color: #FFF;
+  line-height: 35px;
+  padding: 0 45px; }
+  .ocha-header .ocha-header-container {
+    height: 35px;
+    margin: 0 auto;
+    max-width: 1176px;
+    width: 100%; }
+    .ocha-header .ocha-header-container .ocha-services {
+      align-items: center;
+      color: #EEE;
+      display: inline-flex;
+      font-family: helvetica, arial, sans-serif;
+      font-size: 12px;
+      font-weight: 400; }
+      .ocha-header .ocha-header-container .ocha-services .ocha-logo {
+        background: url("../assets/logo-ocha-white.svg") 50% no-repeat;
+        background-size: contain;
+        display: inline-block;
+        flex-shrink: 0;
+        height: 18px;
+        margin-right: 4px;
+        width: 21px; }
+      .ocha-header .ocha-header-container .ocha-services .icon-o-arrow-up {
+        display: none; }
+      .ocha-header .ocha-header-container .ocha-services .icon-o-arrow-up,
+      .ocha-header .ocha-header-container .ocha-services .icon-o-arrow-down {
+        margin-left: 10px;
+        height: 9px;
+        fill: #EEE; }
+      .ocha-header .ocha-header-container .ocha-services:hover {
+        text-decoration: underline; }
+  .ocha-header .ocha-services-menu-container .ocha-services-menu {
+    color: #EEE;
+    display: flex;
+    font-family: helvetica, arial, sans-serif;
+    font-size: 12px;
+    font-weight: 600;
+    justify-content: space-between;
+    margin: 0 auto;
+    max-width: 1176px;
+    padding: 22px 0;
+    width: 100%; }
+    .ocha-header .ocha-services-menu-container .ocha-services-menu .btn.ocha-see-all {
+      background-color: #CCC;
+      border: 0;
+      border-radius: 2px;
+      color: #0077CE;
+      display: inline-block;
+      font-family: 'Gotham-Bold';
+      font-size: 12px;
+      height: 43px;
+      margin: 20px 0;
+      padding: 4px !important;
+      text-align: center;
+      text-transform: uppercase;
+      width: 210px; }
+      .ocha-header .ocha-services-menu-container .ocha-services-menu .btn.ocha-see-all:hover {
+        background-color: #888;
+        text-decoration: none; }
+  .ocha-header .dropdown-menu {
+    background-color: #333;
+    -webkit-box-shadow: 0 6px 12px rgba(0, 0, 0, 0.175);
+    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.175);
+    display: none;
+    left: 0;
+    list-style: none;
+    position: absolute;
+    text-align: left;
+    top: 35px;
+    width: 100%;
+    z-index: 1002; }
+    .ocha-header .dropdown-menu .ocha-links-list {
+      list-style-type: none;
+      margin-top: 0;
+      padding: 0; }
+      .ocha-header .dropdown-menu .ocha-links-list li {
+        font-size: 12px;
+        line-height: 21px;
+        margin-top: 6px; }
+        .ocha-header .dropdown-menu .ocha-links-list li a {
+          color: #FFF; }
+          .ocha-header .dropdown-menu .ocha-links-list li a:hover {
+            color: #F2645A;
+            text-decoration: none; }
+    .ocha-header .dropdown-menu .list-title {
+      color: #EEE;
+      font-size: 12px;
+      font-weight: 400;
+      margin: 0; }
 
 @media only screen and (max-width: 767px) {
   .logos .grid-container > div {

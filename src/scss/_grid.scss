@@ -4,7 +4,7 @@
   grid-gap: 30px;
   grid-template-rows: auto;
   margin: 0 auto;
-  max-width: 900px;
+  max-width: 1170px;
   &.center--vertical {
 		align-items: center;
   }
@@ -31,7 +31,11 @@
 }
 
 .col-8 {
-  grid-column: 3 / span 8;
+  grid-column: span 8;
+}
+
+.col-9 {
+  grid-column: span 9;
 }
 
 .col-12 {

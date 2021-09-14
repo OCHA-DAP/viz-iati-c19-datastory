@@ -6,43 +6,161 @@
     <meta name='viewport' content='initial-scale=1,maximum-scale=1,user-scalable=no' />
     <link rel='icon' type='image/png' href='https://data.humdata.org/images/icons/hdx.ico' />
     <link href="https://fonts.googleapis.com/css?family=Source+Sans+Pro&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Open+Sans+Condensed:wght@700&display=swap" rel="stylesheet">
     <link href='css/styles.css' rel='stylesheet' />
   </head>
 
   <body>
+    <div class='ocha-header'>
+      <div class="ocha-header-container">
+        <a href="#" data-toggle="dropdown" class="ocha-services" aria-label="OCHA services">
+          <span class="ocha-logo">&nbsp;</span>
+          <span class="ocha-services-text">OCHA Services</span>
+
+          <svg class="icon-o-arrow-up" viewBox="0 0 48 48"><path d="M0,34a4,4,0,0,1,1.17-2.83l20-20a4,4,0,0,1,5.66,0l20,20a4,4,0,1,1-5.66,5.66L24,19.66,6.83,36.83A4,4,0,0,1,0,34Z"></path></svg>
+          <svg class="icon-o-arrow-down" viewBox="0 0 48 48"><path d="M48,14a4,4,0,0,1-1.17,2.83l-20,20a4,4,0,0,1-5.66,0l-20-20a4,4,0,0,1,5.66-5.66L24,28.34,41.17,11.17A4,4,0,0,1,48,14Z"></path></svg>
+        </a>
+        <div class="dropdown-menu ocha-services-menu-container" role="menu">
+          <div class="ocha-services-menu">
+            <div>
+              <p class="list-title">Related Platforms</p>
+              <ul class="ocha-links-list">
+                <li><a href="https://humdata.org/" target="_blank">Humanitarian Data Exchange (HDX)</a></li>
+                <li><a href="https://tools.humdata.org/" target="_blank">HDX Tools</a></li>
+                <li><a href="http://hxlstandard.org/" target="_blank">Humanitarian Exchange Language (HXL)</a></li>
+              </ul>
+            </div>
+            <div>
+              <p class="list-title">Other OCHA Services</p>
+              <ul class="ocha-links-list">
+                <li>
+                  <a href="https://fts.unocha.org/" target="_blank">Financial Tracking Service</a>
+                </li>
+                <li>
+                  <a href="https://data.humdata.org/" target="_blank">Humanitarian Data Exchange</a>
+                </li>
+                <li>
+                  <a href="https://humanitarian.id/" target="_blank">Humanitarian ID</a>
+                </li>
+                <li>
+                  <a href="https://hum-insight.info/" target="_blank">Humanitarian InSight</a>
+                </li>
+                <li>
+                  <a href="https://www.humanitarianresponse.info" target="_blank">Humanitarian Response</a>
+                </li>
+              </ul>
+            </div>
+            <div>
+              <p class="list-title list-title-empty">&nbsp;</p>
+              <ul class="ocha-links-list">
+                <li><a href="https://interagencystandingcommittee.org/" target="_blank">Inter-Agency Standing Committee</a></li>
+                <li><a href="https://www.unocha.org" target="_blank">OCHA Website</a></li>
+                <li><a href="https://reliefweb.int" target="_blank">Relief Web</a></li>
+                <li><a href="https://vosocc.unocha.org/" target="_blank">Virtual OSOCC</a></li>
+              </ul>
+            </div>
+            <div>
+              <a href="https://www.unocha.org/ocha-digital-services" target="_blank" class="btn ocha-see-all">See all</a>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
 
     <main>
+      <div class='introduction'>
+        <section>
+          <div class='grid-container'>
+            <div class='col-3'>
+              <h1>COVID-19 Funding Insights Using IATI</h1>
+              <h4>15 September 2021</h4>
+            </div>
+            <div class='col-9'>
+              <p>The Centre for Humanitarian Data has been tracking financial commitments, spending and funding flows for the COVID-19 pandemic using the <a href='https://iatistandard.org/' target='_blank'>International Aid Transparency Initiative</a> (IATI) standard. IATI is a global initiative to improve the transparency of development and humanitarian aid. Over 1,300 organisations participate in the initiative and 200 of them used the standard to publish data on their COVID-19 spending.</p>
+              <p>We have created an <a href='https://data.humdata.org/viz-iati-c19-dashboard/' target='_blank'>IATI COVID-19 Funding Dashboard</a> with transactions from 13,723 activities by all publishing organizations covering the period from March 2020 until the present (the data is updated daily). Here, we offer a few insights about the international response to the COVID-19 pandemic, and about how organisations are using IATI to share their data. The visuals show data from March 2020 until June 2021. </p>
+            </div>
+          </div>
+        </section>
+      </div>
+
       <div class='grid-container'>
-        <div class='col-12'>
-          <h1>IATI Data Story</h1>
-          <p>Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium doloremque laudantium, totam rem aperiam, eaque ipsa quae ab illo inventore veritatis et quasi architecto beatae vitae dicta sunt explicabo. Nemo enim ipsam voluptatem quia voluptas sit aspernatur aut odit aut fugit, sed quia consequuntur magni dolores eos qui ratione voluptatem sequi nesciunt.</p>
-
-          <div class="container line-container">
-            <div id="lineChart"></div>
-          </div>
-
-          <div class="container line-container">
-            <div id="growthChart"></div>
-          </div>
-
-          <div class="container lollipop-container">
-            <div id="lollipopChart"></div>
-            <div class="legend"><div><div class="key key-circle" style="background-color:#F2645A"></div>Spending</div><div><div class="key key-circle" style="background-color:#007CE1"></div>Commitments</div></div>
-          </div>
-
-          <div class="container bar-container">
-            <div id="barChart"></div>
-          </div>
-
-          <div class="container bar-container">
-            <div id="healthChart"></div>
-          </div>
-
+        <div class='text-col col-5'>
+          <section class='step' data-chart='1'>
+            <h2>IATI publishers responded quickly</h2>
+            <p>The IATI secretariat released COVID-19 publishing <a href='https://iatistandard.org/en/news/publishing-data-covid-19-using-iati-standard/' target='_blank'>guidance</a> in April 2020. Soon after, organisations started to use this, flagging their COVID-19-related activities using the IATI standard. To date, over 200 organisations have published their COVID-19 funding data using IATI, with some $100 billion in commitments and $65 billion in spending covering 195 countries.</p>
+            <p>Governments and multilateral organisations (such as UN agencies) represent a smaller number of publishers, but account for the majority of the funding. Significant growth has occurred in the number of NGO publishers over the past year.</p>
+          </section>
+          <section class='step' data-chart='2'>
+            <h2>Multilaterals tend to publish their commitments quarterly</h2>
+            <p>IATI publishing organisations can share data on both commitments (promises of funding) and spending (actual disbursements to other organisations or direct expenditures). The data shows that multilateral funding commitments are not spread evenly over time, but tend to cluster near the end of each quarter.</p>
+            <p>Multilaterals reported more commitments than governments, even though much of their funding comes from these donors. This suggests that many government donors are only publishing their spending rather than their commitments.  As expected, the volume of money promised by NGOs was far less.</p>
+          </section>
+          <section class='step' data-chart='3'>
+            <h2>Some recipient countries have gaps between commitments and spending</h2>
+            <p>When organisations publish their commitments and spending data in IATI, they often specify which country or countries each financial transaction is destined for. When comparing the commitments with the actual spending, we can see significant gaps between what has been promised and spent in various countries. It is not clear to what extent these gaps are real, or just expose issues with IATI data quality.</p>
+            <p>As of August 2021, some countries, like India, have received most of what they have been promised, while others, like Brazil and Egypt, appear to have received very little of their promised funding. This will change as IATI publishers apply updates to their data. (See the latest data on commitments and spending in the live <a href='https://data.humdata.org/viz-iati-c19-dashboard/' target='_blank'>dashboard</a>).</p>
+          </section>
+          <section class='step' data-chart='4'>
+            <h2>The majority of spending is not earmarked for the Health sector</h2>
+            <p>Organisations are able to earmark their commitments and spending by sector. (We aggregated the more than 300 OECD sector options available in IATI into 27 high-level OECD sector groups to simplify the analysis and the user experience of the dashboard). We found that nearly $9 billion of the $84.7 billion in spending was left uncategorised by publishers.</p>
+            <p>For the data where a sector was given, <mark id='0'>‘Health’</mark> was in first place, but represented only 25% of the total, with <mark id='1'>‘Government and Civil Society’</mark> (19%) and <mark id='2'>‘Other Social Infrastructure & Services’</mark> (18%) close behind. This points to the complex impact of the COVID-19 pandemic, which goes beyond direct health issues like hospitalisation and vaccination to unemployment and budget shortfalls for infrastructure and public services.</p>
+          </section>
+          <section class='step' data-chart='5'>
+            <p>Looking specifically at health-related funding, we see major spikes that likely correspond to donor commitments for vaccination research initially, and later, vaccination programmes in vulnerable countries; however, since there is no sector code specifically for vaccination, IATI data does not allow close monitoring of vaccine-related spending; it merely suggests that there might be something worth examining more closely through other sources. The spikes may also be influenced by the bias towards end-of-quarter reporting that we noted in discovery #2.</p>
+          </section>
+          <section class='step' data-chart='6'>
+            <h2>Funding flows are often incomplete in IATI</h2>
+            <p>IATI data should list which organisations were involved in any transaction — who provided incoming commitments and funding, and what organisations are the recipients of outgoing commitments and disbursements. However, we found that the data is incomplete: many IATI publishing organisations do not list their partners, and many of those partners do not yet publish using IATI.</p>
+            <p>For some organisations, as with this example of Cordaid (a Netherlands NGO), it’s possible to see both the incoming and outgoing partners for spending, but that’s rare.  Government publishers, of course, report mainly outgoing funding. But in all cases, it’s difficult to reconcile the two sides of reported money transfers among organisations, because many IATI publishers cite only recipients of outgoing funds, while others cite only providers of incoming funds.</p>
+            <p>Often, organisations were only described by name, rather than using a shared and unique reference code, and this presented significant work to try and match entities. While IATI data gives us unique insights into the sectors and countries where money is going during the global COVID-19 pandemic, and how well organisations are meeting their commitments, there is still a lot of work to be done before it can help us with accountability for transactions among aid organisations.</p>
+          </section>
         </div>
+        <div class='visual-col col-7'>
+          <div class='container line-container' id='chart1'>
+            <div id='lineChart'></div>
+          </div>
+
+          <div class='container line-container' id='chart2'>
+            <div id='growthChart'></div>
+          </div>
+
+          <div class='container lollipop-container' id='chart3'>
+            <div id='lollipopChart'></div>
+            <div class='legend'><div><div class='key key-circle' style='background-color:#F2645A'></div>Spending</div><div><div class='key key-circle' style='background-color:#007CE1'></div>Commitments</div></div>
+          </div>
+
+          <div class='container bar-container' id='chart4'>
+            <div id='barChart'></div>
+          </div>
+
+          <div class='container bar-container' id='chart5'>
+            <div id='healthChart'></div>
+          </div>
+
+          <div class='container bar-container' id='chart6'>
+            <div id='sankeyChart'></div>
+          </div>
+        </div>
+
+        <!-- <div class='conclusion col-12'>
+          <section>
+            <p>Aid organisations use IATI to provide extensive, sometimes near-real-time data about the funding they’re providing for the global COVID-19 response. The IATI data has issues, and we need to use care when interpreting it, but it points the way to topics that need further investigation:</p>
+
+            <ul>
+              <li>some countries appear to be receiving little of the money that’s been promised to them</li>
+              <li>funding commitments align more closely with aid-organisations’ fiscal quarters than with developments in the crisis itself, and 
+              <li>funding is broadening out into other sectors than Health.</li>
+            </ul>
+
+            <p>The UNOCHA Centre for Humanitarian Data updates the IATI COVID-19 Funding Dashboard every night with new data from IATI publishers, and we encourage you to visit often to see how the funding picture for the crisis is changing.</p>
+            <p>If you have any questions, or want to report any issues, please get in touch with us at XXX@humdata.org.</p>
+          </section>
+        </div> -->
+
       </div>
     </main>
 
-    <footer>
+<!--     <footer>
       <div class='logos'>
         <div class='grid-container'>
           <div class='col-12'>
@@ -55,6 +173,22 @@
           </div>
         </div>
       </div>
+    </footer> -->
+
+    <footer>
+      <div class='grid-container'>
+        <div class='col-8'>
+          <p class='small'>Acknowledgements: This data story was developed by OCHA’s Centre for Humanitarian Data in The Hague. The Centre worked closely with xxx and xxx</p>
+          <p class='small'>The IATI COVID-19 Funding Dashboard is updated every night with new data from IATI publishers. We encourage you to visit often to see how the funding picture for the pandemic is changing. If you have any questions, or want to report any issues, please get in touch with us at <a href='mailto:centrehumdata@un.or'>centrehumdata@un.org</a></p>
+          <p class='small'>Learn more about the Centre’s work: <a href='https://centre.humdata.org' target='_blank'>centre.humdata.org</a></p>
+        </div>
+        <div class='col-4'>
+          <div class='footer-logos'>
+            <a href='http://www.unocha.org/' target='_blank'><img src='assets/logo-ocha-gray.png' height='35' /></a>
+            <a href='http://centre.humdata.org/' target='_blank'><img src='assets/logo-centre-gray.png' height='40' /></a>
+          </div>
+        </div>
+      </div>
     </footer>
 
     <!-- start Mixpanel -->
@@ -63,6 +197,8 @@
       for(h=0;h<k.length;h++)e(d,k[h]);a._i.push([b,c,f])};a.__SV=1.2;b=e.createElement("script");b.type="text/javascript";b.async=!0;b.src="undefined"!==typeof MIXPANEL_CUSTOM_LIB_URL?MIXPANEL_CUSTOM_LIB_URL:"file:"===e.location.protocol&&"//cdn.mxpnl.com/libs/mixpanel-2-latest.min.js".match(/^\/\//)?"https://cdn.mxpnl.com/libs/mixpanel-2-latest.min.js":"//cdn.mxpnl.com/libs/mixpanel-2-latest.min.js";c=e.getElementsByTagName("script")[0];c.parentNode.insertBefore(b,c)}})(document,window.mixpanel||[]);
     </script>
     <!-- End Mixpanel -->
+    <script src="//cdnjs.cloudflare.com/ajax/libs/ScrollMagic/2.0.7/ScrollMagic.min.js"></script>
+    <script src="//cdnjs.cloudflare.com/ajax/libs/ScrollMagic/2.0.7/plugins/debug.addIndicators.min.js"></script>
     <script src="https://d3js.org/d3.v4.js"></script>
     <script type='text/javascript' src='js/bundle.min.js'></script>
   </body>

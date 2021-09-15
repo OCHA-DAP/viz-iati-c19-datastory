@@ -567,7 +567,7 @@ function barChart() {
       .append("rect")
       .attr("x", spendingX(0) )
       .attr("y", function(d) { return y(d.Sector); })
-      .attr("width", 0)
+      .attr('width', function(d, i) { return spendingX(d['Net new commitments']); })
       .attr("height", y.bandwidth() )
       .attr("fill", "#007CE1")
       .attr("class", "spendingBar")
@@ -1070,7 +1070,6 @@ $( document ).ready(function() {
         $('.visual-col .container').fadeOut(0);
         $('#chart'+id).clearQueue().fadeIn(600);
 
-
         if (id=='1') {
           animPubLine();
         }
@@ -1091,16 +1090,6 @@ $( document ).ready(function() {
         var id = $(e.target.triggerElement()).data('chart');
         $('.visual-col .container').fadeOut(0);
         $('#chart'+(id-1)).clearQueue().fadeIn(600);
-
-        if (id=='1') {
-          resetPubLine();
-        }
-        if (id=='2') {
-          resetOrgLine();
-        }
-        if (id=='5') {
-          resetHealthLine();
-        }
       })
       //.addIndicators()
       .addTo(controller);
@@ -1121,16 +1110,12 @@ $( document ).ready(function() {
       });
       
       d3.selectAll('.pubDot')
+        .attr('opacity', 0)
         .transition()
           .duration(200)
           .delay(function(d, i) { return i*30; })
           .ease(d3.easeLinear)
             .attr("opacity", 1)
-  }
-
-  function resetPubLine() {
-    d3.selectAll('.pubDot')
-      .attr('opacity', 0)
   }
 
   function animOrgLine() {
@@ -1147,6 +1132,7 @@ $( document ).ready(function() {
       });
       
       d3.selectAll('.orgDot')
+        .attr('opacity', 0)
         .transition()
           .duration(200)
           .delay(function(d, i) { return i*25; })
@@ -1154,35 +1140,30 @@ $( document ).ready(function() {
             .attr("opacity", 1)
   }
 
-  function resetOrgLine() {
-    d3.selectAll('.orgDot')
-      .attr('opacity', 0)
-  }
-
   function animGap() {
     d3.selectAll('.commitments')
-      .attr("cx", function(d) { return gapX(d['Net spending']); })
+      .attr('cx', function(d) { return gapX(d['Net spending']); })
       .transition()
       .duration(800)
       .ease(d3.easeQuadOut)
-      .attr("cx", function(d) { return gapX(d['Net commitments']); })
+      .attr('cx', function(d) { return gapX(d['Net commitments']); })
 
     d3.selectAll('.gapLine')
-      .attr("x2", function(d) { return gapX(d['Net spending']); })
+      .attr('x2', function(d) { return gapX(d['Net spending']); })
       .transition()
       .duration(800)
       .ease(d3.easeQuadOut)
-      .attr("x2", function(d) { return gapX(d['Net commitments']); })
+      .attr('x2', function(d) { return gapX(d['Net commitments']); })
   }
 
   function animSpendingBar() {
     d3.selectAll('.spendingBar')
-      .attr("width", 0)
+      .attr('width', 0)
       .transition()
       .duration(800)
       .ease(d3.easeQuadOut)
-      .attr("width", function(d, i) { return spendingX(d['Net new commitments']); })
-      .on("end", function(d, i) {
+      .attr('width', function(d, i) { return spendingX(d['Net new commitments']); })
+      .on('end', function(d, i) {
         if (i==9) {
           animComplete = true;
         }
@@ -1191,7 +1172,7 @@ $( document ).ready(function() {
 
   function animHealthLine() {    
     var path = d3.selectAll('#healthLine')
-    if (path!=null) {
+    if (path.node() != null) {
       var pathLength = path.node().getTotalLength();
       path
         .attr('stroke-dashoffset', pathLength)
@@ -1202,17 +1183,13 @@ $( document ).ready(function() {
           .attr('stroke-dashoffset', 0);
 
       d3.selectAll('.healthDot')
+        .attr('opacity', 0)
         .transition()
           .duration(200)
           .delay(function(d, i) { return i*100; })
           .ease(d3.easeLinear)
             .attr('opacity', 1)
     }
-  }
-
-  function resetHealthLine() {
-    d3.selectAll('.healthDot')
-      .attr('opacity', 0)
   }
 
 

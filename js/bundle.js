@@ -129,7 +129,7 @@ function lineChart() {
           .data(data)
         .enter().append("circle")
           .attr("r", 3)
-          .attr("opacity", 0)
+          .attr("opacity", 1)
           .attr("class", "pubDot")
           .attr("fill", function(d){ return color(d.name) })
           .attr("cx", function(d) { return x(d.date); })
@@ -141,7 +141,7 @@ function lineChart() {
       var legend = svg.append('g')
         .attr('class', 'legend')
         .attr("transform",
-            "translate(" + 10 + ",10)");
+            "translate(" + 10 + ", 0)");
 
       //sort legend items
       var legendArray = [];
@@ -286,7 +286,7 @@ function growthChart() {
           .data(data)
         .enter().append("circle")
           .attr("r", 3)
-          .attr("opacity", 0)
+          .attr("opacity", 1)
           .attr("class", "orgDot")
           .attr("fill", function(d){ return color(d.name) })
           .attr("cx", function(d) { return x(d.date); })
@@ -298,7 +298,7 @@ function growthChart() {
       var legend = svg.append('g')
         .attr('class', 'legend')
         .attr("transform",
-            "translate(" + (width-180) + ",10)");
+            "translate(" + (width-180) + ", 0)");
 
       //sort legend
       var legendArray = [];
@@ -684,7 +684,7 @@ function healthChart() {
           .attr("r", 3)
           .attr("fill", "#007CE1")
           .attr("class", "healthDot")
-          .attr("opacity", 0)
+          .attr("opacity", 1)
           .on('mouseover', tool_tip.show)
           .on('mouseout', tool_tip.hide);
   })

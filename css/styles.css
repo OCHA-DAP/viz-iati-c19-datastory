@@ -1169,6 +1169,8 @@ mark {
 
 .introduction {
   height: 150vh;
+  margin: 0 auto;
+  max-width: 1170px;
   position: relative; }
   .introduction section {
     min-height: auto;
@@ -1184,6 +1186,9 @@ mark {
     position: fixed;
     top: 50%;
     transform: translateY(-50%); }
+    .visual-col .container img {
+      max-width: 750px;
+      width: 100%; }
 
 .label {
   font-size: 12px; }

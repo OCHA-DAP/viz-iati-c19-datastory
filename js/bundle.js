@@ -454,14 +454,14 @@ function lollipopChart() {
 
     lines.append("circle")
         .style("fill", "#F2645A")
-        //.attr("class", "spending")
+        .attr("class", "spending")
         .attr("r", "6")
         .attr("cx", function(d) { return gapX(d['Net spending']); })
         .attr("cy", function(d) { return y(d['Recipient country']); });
 
     lines.append("circle")
         .style("fill", "#007CE1")
-        //.attr("class", "commitments")
+        .attr("class", "commitments")
         .attr("r", "6")
         .attr("cx", function(d) { return gapX(d['Net commitments']); })
         .attr("cy", function(d) { return y(d['Recipient country']); });

@@ -128,7 +128,7 @@ function lineChart() {
           .data(data)
         .enter().append("circle")
           .attr("r", 3)
-          .attr("opacity", 0)
+          .attr("opacity", 1)
           .attr("class", "pubDot")
           .attr("fill", function(d){ return color(d.name) })
           .attr("cx", function(d) { return x(d.date); })
@@ -140,7 +140,7 @@ function lineChart() {
       var legend = svg.append('g')
         .attr('class', 'legend')
         .attr("transform",
-            "translate(" + 10 + ",10)");
+            "translate(" + 10 + ", 0)");
 
       //sort legend items
       var legendArray = [];
@@ -285,7 +285,7 @@ function growthChart() {
           .data(data)
         .enter().append("circle")
           .attr("r", 3)
-          .attr("opacity", 0)
+          .attr("opacity", 1)
           .attr("class", "orgDot")
           .attr("fill", function(d){ return color(d.name) })
           .attr("cx", function(d) { return x(d.date); })
@@ -297,7 +297,7 @@ function growthChart() {
       var legend = svg.append('g')
         .attr('class', 'legend')
         .attr("transform",
-            "translate(" + (width-180) + ",10)");
+            "translate(" + (width-180) + ", 0)");
 
       //sort legend
       var legendArray = [];
@@ -342,30 +342,49 @@ function lollipopChart() {
             "translate(" + margin.left + "," + margin.top + ")");
 
   //init tooltip
+  // var tool_tip = d3.tip()
+  //   .attr("class", "d3-tip")
+  //   .offset([-8, 0])
+  //   .html(function(d) {
+  //     var type = ($(this).attr('class')=='spending') ? 'Spending' : 'Commitments';
+  //     var val = (type=='Spending') ? d['Net spending'] : d['Net commitments'];
+  //     return "<span class='label type'>" + type + '</span>: ' + formatValue(val); 
+  //   });
+  // svg.call(tool_tip);
   var tool_tip = d3.tip()
     .attr("class", "d3-tip")
     .offset([-8, 0])
     .html(function(d) {
-      var type = ($(this).attr('class')=='spending') ? 'Net spending' : 'Net commitments';
-      return "<span class='label type'>" + type + '</span>: ' + formatValue(d[type]); 
+      var content = '<span class="label type">Spending: ' + formatValue(d['Net spending']);
+      content += '<br>Commitments: ' + formatValue(d['Net commitments']);
+      content += '<br>Percentage gap: ' + d['Percentage gap'] + '%</span>';
+      return content; 
     });
   svg.call(tool_tip);
 
+
+  //Percentage gap
+
   //get data
-  d3.csv("data/iati-c19-commitment-spending-by-country.csv", function(data) {
+  d3.csv("data/data.csv", function(data) { //iati-c19-commitment-spending-by-country.csv
     data.shift(); //remove headers
 
-    //sort by gap size
-    data = data.sort((a, b) =>
-      +a['Commitment/spending gap'] > +b['Commitment/spending gap'] ? -1 : 1
-    )
-
-    //get top ten by gap
+    //get curated list
+    var countryList = ['Egypt','Angola','Nigeria','Turkey','Guatemala','Ecuador','Myanmar','Kenya','Niger','Kazakhstan'];
     var chartData = [];
-    data.slice(0, 10).map((d, i) => {
-      if (d['Net commitments']!='' && d['Net spending']!='')
-        chartData.push(d);
+    data.forEach(function(d) {
+      countryList.forEach(function(c, i) {
+        if (d['Recipient country'] == c) {
+          chartData.push(d);
+          countryList.splice(i, 1);
+        }
+      })
     });
+
+    //sort by gap percentage
+    data = data.sort((a, b) =>
+      +a['Percentage gap'] > +b['Percentage gap'] ? -1 : 1
+    )
 
     //chart title
     svg.append("text")
@@ -417,42 +436,42 @@ function lollipopChart() {
       .attr("transform", "rotate(-90)")
       .text("Recipient country");
 
-    //line
-    svg.selectAll("deficitLine")
+    //lines
+    var lines = svg.selectAll("deficitLine")
       .data(chartData)
       .enter()
-      .append("line")
+      .append('g');
+
+    lines.append("line")
         .attr("class", "gapLine")
+        .attr("stroke", "#CCC")
+        .attr("stroke-width", "1px")
         .attr("x1", function(d) { return gapX(d['Net spending']); })
         .attr("x2", function(d) { return gapX(d['Net commitments']); })
         .attr("y1", function(d) { return y(d['Recipient country']); })
-        .attr("y2", function(d) { return y(d['Recipient country']); })
-        .attr("stroke", "#CCC")
-        .attr("stroke-width", "1px")
+        .attr("y2", function(d) { return y(d['Recipient country']); });
 
-    //spending
-    svg.selectAll("spendingCircle")
-      .data(chartData)
-      .enter()
-      .append("circle")
-        .attr("class", "spending")
-        .attr("cx", function(d) { return gapX(d['Net spending']); })
-        .attr("cy", function(d) { return y(d['Recipient country']); })
-        .attr("r", "6")
+    lines.append("circle")
         .style("fill", "#F2645A")
-        .on('mouseover', tool_tip.show)
-        .on('mouseout', tool_tip.hide);
-
-    //commitments
-    svg.selectAll("commitmentsCircle")
-      .data(chartData)
-      .enter()
-      .append("circle")
-        .attr("class", "commitments")
-        .attr("cx", function(d) { return gapX(d['Net commitments']); })
-        .attr("cy", function(d) { return y(d['Recipient country']); })
+        .attr("class", "spending")
         .attr("r", "6")
+        .attr("cx", function(d) { return gapX(d['Net spending']); })
+        .attr("cy", function(d) { return y(d['Recipient country']); });
+
+    lines.append("circle")
         .style("fill", "#007CE1")
+        .attr("class", "commitments")
+        .attr("r", "6")
+        .attr("cx", function(d) { return gapX(d['Net commitments']); })
+        .attr("cy", function(d) { return y(d['Recipient country']); });
+
+    lines.append("rect")
+      .style("fill", "#000")
+      .style("opacity", 0)
+      .attr("x", function(d) { return gapX(d['Net spending']) - 8 })
+      .attr("y", function(d) { return y(d['Recipient country']) - 8 })
+      .attr("width", function(d) { return gapX(d['Net commitments']) - gapX(d['Net spending']) + 16 })
+      .attr("height", 16)
         .on('mouseover', tool_tip.show)
         .on('mouseout', tool_tip.hide);
   })
@@ -547,7 +566,7 @@ function barChart() {
       .append("rect")
       .attr("x", spendingX(0) )
       .attr("y", function(d) { return y(d.Sector); })
-      .attr("width", 0)
+      .attr('width', function(d, i) { return spendingX(d['Net new commitments']); })
       .attr("height", y.bandwidth() )
       .attr("fill", "#007CE1")
       .attr("class", "spendingBar")
@@ -664,7 +683,7 @@ function healthChart() {
           .attr("r", 3)
           .attr("fill", "#007CE1")
           .attr("class", "healthDot")
-          .attr("opacity", 0)
+          .attr("opacity", 1)
           .on('mouseover', tool_tip.show)
           .on('mouseout', tool_tip.hide);
   })

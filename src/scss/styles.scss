@@ -108,6 +108,8 @@ mark {
 
 .introduction {
 	height: 150vh;
+	margin: 0 auto;
+  max-width: 1170px;
 	position: relative;
 	section {
 		min-height: auto;
@@ -125,6 +127,10 @@ mark {
 		position: fixed;
 		top: 50%;
 		transform: translateY(-50%);
+		img {
+			max-width: 750px;
+			width: 100%;
+		}
 	}
 }
 
@@ -164,7 +170,8 @@ mark {
 		right: 190px;
 		.key {
 			display: inline-block;
-			margin-right: 6px;
+			margin-right: 6px;    
+			margin-bottom: -1px;
 			&.key-circle {
 				border: 0;
 			  border-radius: 50%;

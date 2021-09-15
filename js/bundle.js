@@ -356,12 +356,12 @@ function lollipopChart() {
   d3.csv("data/iati-c19-commitment-spending-by-country.csv", function(data) {
     data.shift(); //remove headers
 
-    //sort by deficit size
+    //sort by gap size
     data = data.sort((a, b) =>
       +a['Commitment/spending gap'] > +b['Commitment/spending gap'] ? -1 : 1
     )
 
-    //get top ten by deficit
+    //get top ten by gap
     var chartData = [];
     data.slice(0, 10).map((d, i) => {
       if (d['Net commitments']!='' && d['Net spending']!='')
@@ -375,7 +375,7 @@ function lollipopChart() {
       .attr("x", 0)
       .attr("y", 0 - margin.top)
       .attr("dy", ".75em")
-      .text("Commitments and Spending Deficits by Country");
+      .text("Commitments and Spending Gaps by Country");
 
     //x axis
     gapX = d3.scaleLinear()

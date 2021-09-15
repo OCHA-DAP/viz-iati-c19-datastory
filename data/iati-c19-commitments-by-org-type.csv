@@ -1,74 +1,74 @@
 Month,Reporting org type,Net new commitments
 #date+month,#org+type,#value+net
-2020-01,Government & Public Sector,983261329
+2020-01,Government & Public Sector,983094726
 2020-01,Multilateral,750377105
 2020-01,Non Governmental Organisation,1716390
 2020-01,Other,3520033
-2020-02,Government & Public Sector,448267010
+2020-02,Government & Public Sector,444458971
 2020-02,Multilateral,18510608
 2020-02,Non Governmental Organisation,313000
 2020-02,Other,1932082
-2020-03,Government & Public Sector,799089623
+2020-03,Government & Public Sector,798388901
 2020-03,Multilateral,30000000
 2020-03,Non Governmental Organisation,5761335
 2020-03,Other,44401133
-2020-04,Government & Public Sector,740297044
+2020-04,Government & Public Sector,741479162
 2020-04,Multilateral,5029046781
 2020-04,Non Governmental Organisation,12757355
 2020-04,Other,66907643
-2020-05,Government & Public Sector,706072265
+2020-05,Government & Public Sector,705368106
 2020-05,Multilateral,3158242578
 2020-05,Non Governmental Organisation,43502158
 2020-05,Other,92875008
-2020-06,Government & Public Sector,2404586708
+2020-06,Government & Public Sector,2403320473
 2020-06,Multilateral,23943929223
 2020-06,Non Governmental Organisation,82034536
 2020-06,Other,117088257
-2020-07,Government & Public Sector,1584300347
+2020-07,Government & Public Sector,1583326870
 2020-07,Multilateral,2961400270
 2020-07,Non Governmental Organisation,100977392
 2020-07,Other,63258902
-2020-08,Government & Public Sector,2275341855
+2020-08,Government & Public Sector,2275157468
 2020-08,Multilateral,3967562259
 2020-08,Non Governmental Organisation,24385859
 2020-08,Other,65982600
-2020-09,Government & Public Sector,3144245348
+2020-09,Government & Public Sector,3143912620
 2020-09,Multilateral,8766639234
 2020-09,Non Governmental Organisation,70010669
 2020-09,Other,54638434
-2020-10,Government & Public Sector,876254551
+2020-10,Government & Public Sector,878422431
 2020-10,Multilateral,1098348673
 2020-10,Non Governmental Organisation,69516127
 2020-10,Other,101271290
-2020-11,Government & Public Sector,1624026224
+2020-11,Government & Public Sector,1623842625
 2020-11,Multilateral,2304991410
 2020-11,Non Governmental Organisation,36641938
 2020-11,Other,59867426
-2020-12,Government & Public Sector,4978478662
+2020-12,Government & Public Sector,4997194032
 2020-12,Multilateral,12855386711
 2020-12,Non Governmental Organisation,58788495
 2020-12,Other,164829057
-2021-01,Government & Public Sector,229436763
+2021-01,Government & Public Sector,229444222
 2021-01,Multilateral,431166107
 2021-01,Non Governmental Organisation,44034976
 2021-01,Other,1367632
-2021-02,Government & Public Sector,347412699
+2021-02,Government & Public Sector,347546171
 2021-02,Multilateral,2690081078
 2021-02,Non Governmental Organisation,42246884
 2021-02,Other,759795
-2021-03,Government & Public Sector,3140610439
+2021-03,Government & Public Sector,3141972614
 2021-03,Multilateral,11231007411
 2021-03,Non Governmental Organisation,16100555
 2021-03,Other,2489455
-2021-04,Government & Public Sector,258935439
+2021-04,Government & Public Sector,259219621
 2021-04,Multilateral,349369218
 2021-04,Non Governmental Organisation,6497326
-2021-04,Other,2595948
-2021-05,Government & Public Sector,139241259
+2021-04,Other,2596314
+2021-05,Government & Public Sector,139210378
 2021-05,Multilateral,560093963
 2021-05,Non Governmental Organisation,8405149
 2021-05,Other,2945780
-2021-06,Government & Public Sector,1616882920
+2021-06,Government & Public Sector,1620414573
 2021-06,Multilateral,17604670008
 2021-06,Non Governmental Organisation,49291181
 2021-06,Other,7208000
@@ -81,4 +81,4 @@ Month,Reporting org type,Net new commitments
 2021-08,Non Governmental Organisation,65064253
 2021-08,Other,7139246
 2021-09,Government & Public Sector,163040
-2021-09,Non Governmental Organisation,26746463
+2021-09,Non Governmental Organisation,34492193

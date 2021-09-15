@@ -355,12 +355,12 @@ function lollipopChart() {
   d3.csv("data/iati-c19-commitment-spending-by-country.csv", function(data) {
     data.shift(); //remove headers
 
-    //sort by deficit size
+    //sort by gap size
     data = data.sort((a, b) =>
       +a['Commitment/spending gap'] > +b['Commitment/spending gap'] ? -1 : 1
     )
 
-    //get top ten by deficit
+    //get top ten by gap
     var chartData = [];
     data.slice(0, 10).map((d, i) => {
       if (d['Net commitments']!='' && d['Net spending']!='')
@@ -374,15 +374,15 @@ function lollipopChart() {
       .attr("x", 0)
       .attr("y", 0 - margin.top)
       .attr("dy", ".75em")
-      .text("Commitments and Spending Deficits by Country");
+      .text("Commitments and Spending Gaps by Country");
 
     //x axis
-    var x = d3.scaleLinear()
+    gapX = d3.scaleLinear()
       .domain([0, d3.max(chartData, d => +d['Net commitments'])])
       .range([0, width]);
     svg.append("g")
       .attr("transform", "translate(0," + height + ")")
-      .call(d3.axisBottom(x)
+      .call(d3.axisBottom(gapX)
         .tickFormat(function(d, i) {
           return i % 2 === 0 ? formatValue(d) : null; 
         })
@@ -422,8 +422,9 @@ function lollipopChart() {
       .data(chartData)
       .enter()
       .append("line")
-        .attr("x1", function(d) { return x(d['Net spending']); })
-        .attr("x2", function(d) { return x(d['Net commitments']); })
+        .attr("class", "gapLine")
+        .attr("x1", function(d) { return gapX(d['Net spending']); })
+        .attr("x2", function(d) { return gapX(d['Net commitments']); })
         .attr("y1", function(d) { return y(d['Recipient country']); })
         .attr("y2", function(d) { return y(d['Recipient country']); })
         .attr("stroke", "#CCC")
@@ -435,7 +436,7 @@ function lollipopChart() {
       .enter()
       .append("circle")
         .attr("class", "spending")
-        .attr("cx", function(d) { return x(d['Net spending']); })
+        .attr("cx", function(d) { return gapX(d['Net spending']); })
         .attr("cy", function(d) { return y(d['Recipient country']); })
         .attr("r", "6")
         .style("fill", "#F2645A")
@@ -448,7 +449,7 @@ function lollipopChart() {
       .enter()
       .append("circle")
         .attr("class", "commitments")
-        .attr("cx", function(d) { return x(d['Net commitments']); })
+        .attr("cx", function(d) { return gapX(d['Net commitments']); })
         .attr("cy", function(d) { return y(d['Recipient country']); })
         .attr("r", "6")
         .style("fill", "#007CE1")

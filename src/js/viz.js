@@ -1,4 +1,4 @@
-let spendingX;
+let spendingX, gapX;
 let animComplete = false;
 
 $( document ).ready(function() {
@@ -64,6 +64,9 @@ $( document ).ready(function() {
         if (id=='2') {
           animOrgLine();
         }
+        if (id=='3') {
+          animGap();
+        }
         if (id=='4') {
           animSpendingBar();
         }
@@ -81,9 +84,6 @@ $( document ).ready(function() {
         }
         if (id=='2') {
           resetOrgLine();
-        }
-        if (id=='4') {
-          resetSpendingBar();
         }
         if (id=='5') {
           resetHealthLine();
@@ -146,8 +146,25 @@ $( document ).ready(function() {
       .attr('opacity', 0)
   }
 
+  function animGap() {
+    d3.selectAll('.commitments')
+      .attr("cx", function(d) { return gapX(d['Net spending']); })
+      .transition()
+      .duration(800)
+      .ease(d3.easeQuadOut)
+      .attr("cx", function(d) { return gapX(d['Net commitments']); })
+
+    d3.selectAll('.gapLine')
+      .attr("x2", function(d) { return gapX(d['Net spending']); })
+      .transition()
+      .duration(800)
+      .ease(d3.easeQuadOut)
+      .attr("x2", function(d) { return gapX(d['Net commitments']); })
+  }
+
   function animSpendingBar() {
     d3.selectAll('.spendingBar')
+      .attr("width", 0)
       .transition()
       .duration(800)
       .ease(d3.easeQuadOut)
@@ -159,11 +176,6 @@ $( document ).ready(function() {
       });
   }
 
-  function resetSpendingBar() {
-    d3.selectAll('.spendingBar')
-      .attr("width", 0)
-  }
-
   function animHealthLine() {    
     var path = d3.selectAll('#healthLine')
     if (path!=null) {
@@ -172,15 +184,14 @@ $( document ).ready(function() {
         .attr('stroke-dashoffset', pathLength)
         .attr('stroke-dasharray', pathLength)
         .transition()
-          .duration(1500)
-          .delay(700)
-          .ease(d3.easeQuadInOut)
+          .duration(2000)
+          .ease(d3.easeLinear)
           .attr('stroke-dashoffset', 0);
 
       d3.selectAll('.healthDot')
         .transition()
           .duration(200)
-          .delay(function(d, i) { return i*50; })
+          .delay(function(d, i) { return i*100; })
           .ease(d3.easeLinear)
             .attr('opacity', 1)
     }

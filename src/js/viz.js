@@ -1,5 +1,8 @@
 let spendingX, gapX;
 let animComplete = false;
+let isMobile = $(window).width()<768? true : false;
+let chartH = (isMobile) ? 300 : 350;
+let chartW = (isMobile) ? $(window).width() + 50 : 750;
 
 $( document ).ready(function() {
   function init() {
@@ -10,7 +13,18 @@ $( document ).ready(function() {
     healthChart();
 
     setHandlers();
-    initScroller();
+    console.log(isMobile)
+
+    if (isMobile) {
+      //stack the elements for mobile
+      for (var i=0; i<=$('.step').length; i++) {
+        $('#chart'+i).insertAfter($('section[data-chart='+i+']'));
+      }
+      
+    }
+    else {
+      initScroller();
+    }
   }
 
   function setHandlers() {
@@ -81,6 +95,17 @@ $( document ).ready(function() {
       //.addIndicators()
       .addTo(controller);
     }
+
+    //footer
+    new ScrollMagic.Scene({
+      triggerElement: document.querySelector('#footer'),
+      triggerHook: 0.8
+    })
+    .on('enter', function(e) {
+      $('.visual-col .container').clearQueue().fadeOut(0);
+    })
+    //.addIndicators()
+    .addTo(controller);
   }
 
   function animPubLine() {

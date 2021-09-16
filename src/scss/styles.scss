@@ -52,6 +52,12 @@ h2 {
   font-size: 20px;
 }
 
+h3 {
+  font-family: 'Gotham-Bold';
+  font-size: 14px;
+  margin-left: 90px;
+}
+
 h4 {
 	color: #888;
 	font-family: 'Source Sans Pro', sans-serif;
@@ -65,9 +71,10 @@ section {
 	padding: 0 20px;
 }
 
-footer {
+#footer {
 	border-top: 1px solid #888;
 	color: #505050;
+	min-height: 60vh;
 	margin-top: 40px;
 	padding: 10px 0 10px;
 	width: 100%;
@@ -107,15 +114,15 @@ mark {
 }
 
 .introduction {
-	height: 150vh;
+	height: 125vh;
 	margin: 0 auto;
   max-width: 1170px;
 	position: relative;
 	section {
 		min-height: auto;
 		position: absolute;
-		top: 25%;
-		transform: translateY(-25%);
+		top: 35%;
+		transform: translateY(-35%);
 	}
 }
 
@@ -128,7 +135,7 @@ mark {
 		top: 50%;
 		transform: translateY(-50%);
 		img {
-			max-width: 750px;
+			max-width: 670px;
 			width: 100%;
 		}
 	}
@@ -136,11 +143,6 @@ mark {
 
 .label {
 	font-size: 12px;
-	&.title {
-		font-family: 'Gotham-Bold';
-		font-size: 14px;
-		font-weight: bold;
-	}
 	&.type {
 		text-transform: capitalize;
 	}
@@ -158,7 +160,6 @@ mark {
 			font-size: 12px;
 		}
 	}
-
 	.legend {
 		align-items: flex-start;
 		display: flex;
@@ -167,7 +168,7 @@ mark {
 		margin-top: 10px;
 		position: absolute;
 		bottom: 60px;
-		right: 190px;
+		right: 90px;
 		.key {
 			display: inline-block;
 			margin-right: 6px;    
@@ -367,13 +368,71 @@ mark {
 }
 
 @media only screen and (max-width: 767px) {
-	.logos {
-		.grid-container > div {
-			padding: 0;
-			text-align: center;
+	.ocha-header {
+		padding: 0 20px;
+		.ocha-services-menu-container {
+			.ocha-services-menu {
+				flex-flow: column;
+				padding: 0 30px;
+			}
 		}
+		.dropdown-menu {
+			.list-title {
+				margin-top: 20px;
+				&.list-title-empty {
+					display: none;
+				}
+			}
+		}
+	}
+	h1,
+	h4 {
+		text-align: left;
+	}
+	h3 {
+		margin-left: 0;
+	}
+	.introduction {
+		height: auto;
+		margin-top: 100px;
+		max-width: 100%;	
+		section {
+			position: relative;
+			top: auto;
+			transform: none;
+		}
+	}
+	section {
+		margin-top: 80px;
+		min-height: auto;
+		position: relative;
+		top: auto;
+		transform: none;
+	}
+	.visual-col {
+		display: none;
+	}
+	.container {
+		display: block;
+		margin-top: 50px;
+		padding: 0 20px;
+		position: relative;
+		top: auto;
+		transform: none;
 		img {
-			margin: 10px;
+			max-width: 100%;
 		}
+	}
+	.lollipop-container {
+		.legend {
+			bottom: auto;
+			margin-left: 90px;
+			position: relative;
+			right: auto;
+		}
+	}
+	#footer {
+		margin-top: 100px;
+		min-height: auto;
 	}
 }

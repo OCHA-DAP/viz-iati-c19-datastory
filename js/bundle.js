@@ -1065,6 +1065,9 @@ $( document ).ready(function() {
     .on('enter', function(e) {
       $('.visual-col .container').clearQueue().fadeOut(0);
     })
+    .on('leave', function(e) {
+       $('#chart7').clearQueue().fadeIn(600);
+    })
     //.addIndicators()
     .addTo(controller);
   }

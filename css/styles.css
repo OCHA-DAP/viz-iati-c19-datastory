@@ -1182,8 +1182,8 @@ mark {
   .introduction section {
     min-height: auto;
     position: absolute;
-    top: 35%;
-    transform: translateY(-35%); }
+    top: 30%;
+    transform: translateY(-30%); }
 
 .visual-col {
   height: 100vh;

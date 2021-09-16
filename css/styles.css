@@ -1071,7 +1071,8 @@
   .grid-container {
     grid-template-columns: repeat(2, 1fr);
     grid-column-gap: 10px;
-    grid-row-gap: 0; }
+    grid-row-gap: 0;
+    max-width: 100%; }
   .col-3,
   .col-4,
   .col-5,
@@ -1123,6 +1124,11 @@ h2 {
   font-family: 'Gotham-Bold';
   font-size: 20px; }
 
+h3 {
+  font-family: 'Gotham-Bold';
+  font-size: 14px;
+  margin-left: 90px; }
+
 h4 {
   color: #888;
   font-family: 'Source Sans Pro', sans-serif;
@@ -1134,31 +1140,32 @@ section {
   min-height: 100vh;
   padding: 0 20px; }
 
-footer {
+#footer {
   border-top: 1px solid #888;
   color: #505050;
+  min-height: 60vh;
   margin-top: 40px;
   padding: 10px 0 10px;
   width: 100%; }
-  footer p {
+  #footer p {
     font-size: 13px;
     line-height: 20px;
     padding: 0 20px; }
-  footer .footer-logos {
+  #footer .footer-logos {
     align-items: center;
     display: flex;
     margin: 30px 0 20px; }
-    footer .footer-logos img {
+    #footer .footer-logos img {
       margin-left: 30px; }
-  footer .inner {
+  #footer .inner {
     display: flex;
     flex-flow: row;
     margin: 0 auto;
     padding: 0 20px;
     width: 1170px; }
-    footer .inner .left {
+    #footer .inner .left {
       width: 60%; }
-    footer .inner .right {
+    #footer .inner .right {
       padding-top: 15px;
       text-align: right;
       width: 40%; }
@@ -1168,15 +1175,15 @@ mark {
   cursor: pointer; }
 
 .introduction {
-  height: 150vh;
+  height: 125vh;
   margin: 0 auto;
   max-width: 1170px;
   position: relative; }
   .introduction section {
     min-height: auto;
     position: absolute;
-    top: 25%;
-    transform: translateY(-25%); }
+    top: 35%;
+    transform: translateY(-35%); }
 
 .visual-col {
   height: 100vh;
@@ -1187,15 +1194,11 @@ mark {
     top: 50%;
     transform: translateY(-50%); }
     .visual-col .container img {
-      max-width: 750px;
+      max-width: 670px;
       width: 100%; }
 
 .label {
   font-size: 12px; }
-  .label.title {
-    font-family: 'Gotham-Bold';
-    font-size: 14px;
-    font-weight: bold; }
   .label.type {
     text-transform: capitalize; }
 
@@ -1215,7 +1218,7 @@ mark {
     margin-top: 10px;
     position: absolute;
     bottom: 60px;
-    right: 190px; }
+    right: 90px; }
     .lollipop-container .legend .key {
       display: inline-block;
       margin-right: 6px;
@@ -1369,8 +1372,50 @@ mark {
       margin: 0; }
 
 @media only screen and (max-width: 767px) {
-  .logos .grid-container > div {
-    padding: 0;
-    text-align: center; }
-  .logos img {
-    margin: 10px; } }
+  .ocha-header {
+    padding: 0 20px; }
+    .ocha-header .ocha-services-menu-container .ocha-services-menu {
+      flex-flow: column;
+      padding: 0 30px; }
+    .ocha-header .dropdown-menu .list-title {
+      margin-top: 20px; }
+      .ocha-header .dropdown-menu .list-title.list-title-empty {
+        display: none; }
+  h1,
+  h4 {
+    text-align: left; }
+  h3 {
+    margin-left: 0; }
+  .introduction {
+    height: auto;
+    margin-top: 100px;
+    max-width: 100%; }
+    .introduction section {
+      position: relative;
+      top: auto;
+      transform: none; }
+  section {
+    margin-top: 80px;
+    min-height: auto;
+    position: relative;
+    top: auto;
+    transform: none; }
+  .visual-col {
+    display: none; }
+  .container {
+    display: block;
+    margin-top: 50px;
+    padding: 0 20px;
+    position: relative;
+    top: auto;
+    transform: none; }
+    .container img {
+      max-width: 100%; }
+  .lollipop-container .legend {
+    bottom: auto;
+    margin-left: 90px;
+    position: relative;
+    right: auto; }
+  #footer {
+    margin-top: 100px;
+    min-height: auto; } }

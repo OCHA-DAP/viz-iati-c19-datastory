@@ -15,9 +15,10 @@ function make_y_gridlines(y) {
 
 
 function lineChart() {
-  var margin = {top: 30, right: 190, bottom: 40, left: 90},
-      width = 750 - margin.left - margin.right,
-      height = 350 - margin.top - margin.bottom;
+  var marginL = (isMobile) ? 60 : 90;
+  var margin = {top: 0, right: 90, bottom: 40, left: marginL},
+      width = chartW - margin.left - margin.right,
+      height = chartH - margin.top - margin.bottom;
 
   //init svg
   var svg = d3.select("#lineChart")
@@ -49,15 +50,6 @@ function lineChart() {
       var sumstat = d3.nest()
         .key(function(d) { return d.name; })
         .entries(data);
-
-      //chart title
-      svg.append("text")
-        .attr("class", "label title")
-        .attr("text-anchor", "left")
-        .attr("x", 0)
-        .attr("y", 0 - margin.top)
-        .attr("dy", ".75em")
-        .text("Growth in IATI Covid-19 Publishing Over Time");
 
       //x axis
       var x = d3.scaleLinear()
@@ -95,7 +87,7 @@ function lineChart() {
         .attr("class", "y label")
         .attr("text-anchor", "middle")
         .attr("x", -height/2)
-        .attr("y", -70)
+        .attr("y", -margin.left)
         .attr("dy", ".75em")
         .attr("transform", "rotate(-90)")
         .text("Number of publishers");
@@ -172,9 +164,10 @@ function lineChart() {
 }
 
 function growthChart() {
-  var margin = {top: 30, right: 190, bottom: 40, left: 90},
-      width = 750 - margin.left - margin.right,
-      height = 350 - margin.top - margin.bottom;
+  var marginL = (isMobile) ? 60 : 90;
+  var margin = {top: 0, right: 90, bottom: 40, left: marginL},
+      width = chartW - margin.left - margin.right,
+      height = chartH - margin.top - margin.bottom;
 
   //init svg
   var svg = d3.select("#growthChart")
@@ -206,16 +199,8 @@ function growthChart() {
         .key(function(d) { return d.name; })
         .entries(data);
 
-      //chart title
-      svg.append("text")
-        .attr("class", "label title")
-        .attr("text-anchor", "left")
-        .attr("x", 0)
-        .attr("y", 0 - margin.top)
-        .attr("dy", ".75em")
-        .text("Commitments Over Time by Organization Type");
-
       //x axis
+      var maxTicks = (isMobile) ? 3 : 5;
       var x = d3.scaleLinear()
         .domain(d3.extent(data, function(d) { return d.date; }))
         .range([ 0, width ]);
@@ -223,7 +208,7 @@ function growthChart() {
         .attr("class", "x axis")
         .attr("transform", "translate(0," + height + ")")
         .call(d3.axisBottom(x)
-          .ticks(5)
+          .ticks(maxTicks)
           .tickFormat(d3.timeFormat('%b %Y'))
           .tickSizeOuter(0)
         );
@@ -252,7 +237,7 @@ function growthChart() {
         .attr("class", "y label")
         .attr("text-anchor", "middle")
         .attr("x", -height/2)
-        .attr("y", -70)
+        .attr("y", -margin.left)
         .attr("dy", ".75em")
         .attr("transform", "rotate(-90)")
         .text("Commitments (USD)");
@@ -329,9 +314,9 @@ function growthChart() {
 
 
 function lollipopChart() {
-  var margin = {top: 30, right: 190, bottom: 40, left: 90},
-      width = 750 - margin.left - margin.right,
-      height = 350 - margin.top - margin.bottom;
+  var margin = {top: 0, right: 90, bottom: 40, left: 90},
+      width = chartW - margin.left - margin.right,
+      height = chartH - margin.top - margin.bottom;
 
   //init svg
   var svg = d3.select("#lollipopChart")
@@ -343,15 +328,6 @@ function lollipopChart() {
             "translate(" + margin.left + "," + margin.top + ")");
 
   //init tooltip
-  // var tool_tip = d3.tip()
-  //   .attr("class", "d3-tip")
-  //   .offset([-8, 0])
-  //   .html(function(d) {
-  //     var type = ($(this).attr('class')=='spending') ? 'Spending' : 'Commitments';
-  //     var val = (type=='Spending') ? d['Net spending'] : d['Net commitments'];
-  //     return "<span class='label type'>" + type + '</span>: ' + formatValue(val); 
-  //   });
-  // svg.call(tool_tip);
   var tool_tip = d3.tip()
     .attr("class", "d3-tip")
     .offset([-8, 0])
@@ -363,11 +339,8 @@ function lollipopChart() {
     });
   svg.call(tool_tip);
 
-
-  //Percentage gap
-
   //get data
-  d3.csv("data/data.csv", function(data) { //iati-c19-commitment-spending-by-country.csv
+  d3.csv("data/iati-c19-commitment-spending-by-country.csv", function(data) {
     data.shift(); //remove headers
 
     //get curated list
@@ -386,15 +359,6 @@ function lollipopChart() {
     data = data.sort((a, b) =>
       +a['Percentage gap'] > +b['Percentage gap'] ? -1 : 1
     )
-
-    //chart title
-    svg.append("text")
-      .attr("class", "label title")
-      .attr("text-anchor", "left")
-      .attr("x", 0)
-      .attr("y", 0 - margin.top)
-      .attr("dy", ".75em")
-      .text("Commitments and Spending Gaps by Country");
 
     //x axis
     gapX = d3.scaleLinear()
@@ -480,9 +444,9 @@ function lollipopChart() {
 
 
 function barChart() {
-  var margin = {top: 30, right: 190, bottom: 50, left: 260},
-      width = 750 - margin.left - margin.right,
-      height = 350 - margin.top - margin.bottom;
+  var margin = {top: 0, right: 90, bottom: 50, left: 260},
+      width = chartW - margin.left - margin.right,
+      height = chartH - margin.top - margin.bottom;
 
   //init svg
   var svg = d3.select("#barChart")
@@ -492,15 +456,6 @@ function barChart() {
     .append("g")
       .attr("transform",
             "translate(" + margin.left + "," + margin.top + ")");
-
-  //chart title
-  svg.append("text")
-    .attr("class", "label title")
-    .attr("text-anchor", "left")
-    .attr("x", 0)
-    .attr("y", 0 - margin.top)
-    .attr("dy", ".75em")
-    .text("Spending by Sector");
 
   //init tooltip
   var tool_tip = d3.tip()
@@ -578,9 +533,10 @@ function barChart() {
 }
 
 function healthChart() {
-  var margin = {top: 30, right: 190, bottom: 40, left: 90},
-      width = 750 - margin.left - margin.right,
-      height = 350 - margin.top - margin.bottom;
+  var marginL = (isMobile) ? 60 : 90;
+  var margin = {top: 0, right: 90, bottom: 40, left: marginL},
+      width = chartW - margin.left - margin.right,
+      height = chartH - margin.top - margin.bottom;
 
   //init svg
   var svg = d3.select("#healthChart")
@@ -590,15 +546,6 @@ function healthChart() {
     .append("g")
       .attr("transform",
             "translate(" + margin.left + "," + margin.top + ")");
-
-  //chart title
-  svg.append("text")
-    .attr("class", "label title")
-    .attr("text-anchor", "left")
-    .attr("x", 0)
-    .attr("y", 0 - margin.top)
-    .attr("dy", ".75em")
-    .text("Spending in Health Sector Over Time");
 
   //init tooltip
   var tool_tip = d3.tip()
@@ -619,6 +566,7 @@ function healthChart() {
       data.shift(); //clear headers
 
       //x axis
+      var maxTicks = (isMobile) ? 3 : 5;
       var x = d3.scaleTime()
         .domain(d3.extent(data, function(d) { return d.date; }))
         .range([ 0, width ]);
@@ -626,7 +574,7 @@ function healthChart() {
         .attr("class", "x axis")
         .attr("transform", "translate(0," + height + ")")
         .call(d3.axisBottom(x)
-          .ticks(5)
+          .ticks(maxTicks)
           .tickFormat(d3.timeFormat('%b %Y'))
         );
 
@@ -1013,6 +961,9 @@ d3.tip = function() {
 };
 let spendingX, gapX;
 let animComplete = false;
+let isMobile = $(window).width()<768? true : false;
+let chartH = (isMobile) ? 300 : 350;
+let chartW = (isMobile) ? $(window).width() + 50 : 750;
 
 $( document ).ready(function() {
   function init() {
@@ -1023,7 +974,18 @@ $( document ).ready(function() {
     healthChart();
 
     setHandlers();
-    initScroller();
+    console.log(isMobile)
+
+    if (isMobile) {
+      //stack the elements for mobile
+      for (var i=0; i<=$('.step').length; i++) {
+        $('#chart'+i).insertAfter($('section[data-chart='+i+']'));
+      }
+      
+    }
+    else {
+      initScroller();
+    }
   }
 
   function setHandlers() {
@@ -1097,12 +1059,11 @@ $( document ).ready(function() {
 
     //footer
     new ScrollMagic.Scene({
-      triggerElement: $('footer'),
-      triggerHook: 0.5
+      triggerElement: document.querySelector('#footer'),
+      triggerHook: 0.8
     })
     .on('enter', function(e) {
-      $('#chart7').fadeOut(0);
-      console.log('footer enter')
+      $('.visual-col .container').clearQueue().fadeOut(0);
     })
     //.addIndicators()
     .addTo(controller);

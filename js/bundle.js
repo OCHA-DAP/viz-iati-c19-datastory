@@ -1094,6 +1094,18 @@ $( document ).ready(function() {
       //.addIndicators()
       .addTo(controller);
     }
+
+    //footer
+    new ScrollMagic.Scene({
+      triggerElement: $('footer'),
+      triggerHook: 0.5
+    })
+    .on('enter', function(e) {
+      $('#chart7').fadeOut(0);
+      console.log('footer enter')
+    })
+    //.addIndicators()
+    .addTo(controller);
   }
 
   function animPubLine() {

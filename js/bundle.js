@@ -122,7 +122,10 @@ function lineChart() {
         .enter().append("circle")
           .attr("r", 3)
           .attr("opacity", 1)
-          .attr("class", "pubDot")
+          .attr("class", function(d) { 
+            var className = (d.name=='Non Governmental Organization') ? 'pubDot pubDot2' : 'pubDot';
+            return className
+          })
           .attr("fill", function(d){ return color(d.name) })
           .attr("cx", function(d) { return x(d.date); })
           .attr("cy", function(d) { return y(d.value); })
@@ -165,7 +168,7 @@ function lineChart() {
 
 function growthChart() {
   var marginL = (isMobile) ? 60 : 90;
-  var margin = {top: 0, right: 90, bottom: 40, left: marginL},
+  var margin = {top: 3, right: 90, bottom: 40, left: marginL},
       width = chartW - margin.left - margin.right,
       height = chartH - margin.top - margin.bottom;
 
@@ -273,6 +276,14 @@ function growthChart() {
           .attr("r", 3)
           .attr("opacity", 1)
           .attr("class", "orgDot")
+          .attr("class", function(d) {
+            var className = 'orgDot';
+            if (d.name=='Multilateral')
+              className += ' orgDot1';
+            if (d.name=='Government & Public Sector')
+              className += ' orgDot0';
+            return className
+          })
           .attr("fill", function(d){ return color(d.name) })
           .attr("cx", function(d) { return x(d.date); })
           .attr("cy", function(d) { return y(d.value); })
@@ -405,7 +416,11 @@ function lollipopChart() {
     var lines = svg.selectAll("deficitLine")
       .data(chartData)
       .enter()
-      .append('g');
+      .append('g')
+        .attr("class", "gapLines")
+        .attr("id", function(d) {
+          return (d['Recipient country']).toLowerCase()
+        });
 
     lines.append("line")
         .attr("class", "gapLine")
@@ -454,8 +469,7 @@ function barChart() {
       .attr("width", width + margin.left + margin.right)
       .attr("height", height + margin.top + margin.bottom)
     .append("g")
-      .attr("transform",
-            "translate(" + margin.left + "," + margin.top + ")");
+      .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
 
   //init tooltip
   var tool_tip = d3.tip()
@@ -534,7 +548,7 @@ function barChart() {
 
 function healthChart() {
   var marginL = (isMobile) ? 60 : 90;
-  var margin = {top: 0, right: 90, bottom: 40, left: marginL},
+  var margin = {top: 8, right: 90, bottom: 40, left: marginL},
       width = chartW - margin.left - margin.right,
       height = chartH - margin.top - margin.bottom;
 
@@ -635,6 +649,25 @@ function healthChart() {
           .attr("opacity", 1)
           .on('mouseover', tool_tip.show)
           .on('mouseout', tool_tip.hide);
+
+      //highlights
+      var ring = svg
+        .append("g")
+        .selectAll("ring")
+        .data(data)
+        .enter()
+        .append("circle")
+          .attr("cx", function(d) { return x(d.date) } )
+          .attr("cy", function(d) { return y(d.value) } )
+          .attr("r", function(d) { if (d.value>1000000000) return 8; })
+          .attr("stroke", "#F2645A")
+          .attr("fill", "none")
+          .attr("stroke-dasharray", "4 2")
+          .attr("class", function(d) {
+            return (d.date.getFullYear()==2020) ? "highlightRing highlightRing0" : "highlightRing highlightRing1"
+          })
+          .attr("opacity", 0);
+
   })
 }
 // d3.tip
@@ -961,7 +994,7 @@ d3.tip = function() {
 };
 let spendingX, gapX;
 let animComplete = false;
-let isMobile = $(window).width()<768? true : false;
+let isMobile = $(window).width() < 768 ? true : false;
 let chartH = (isMobile) ? 300 : 350;
 let chartW = (isMobile) ? $(window).width() + 50 : 750;
 
@@ -974,14 +1007,12 @@ $( document ).ready(function() {
     healthChart();
 
     setHandlers();
-    console.log(isMobile)
 
     if (isMobile) {
       //stack the elements for mobile
       for (var i=0; i<=$('.step').length; i++) {
         $('#chart'+i).insertAfter($('section[data-chart='+i+']'));
       }
-      
     }
     else {
       initScroller();
@@ -989,30 +1020,22 @@ $( document ).ready(function() {
   }
 
   function setHandlers() {
-    $('mark').on('mouseover', function() {
+    //highlights handler
+    $('mark').on('mouseover', function(e) {
       if (animComplete) {
-        d3.selectAll('.spendingBar')
-          .transition()
-          .duration(300)
-          .attr("fill", "#CCE5F9")
-
-        d3.selectAll('#spendingBar'+$(this).attr("id"))
-          .transition()
-          .duration(300)
-          .attr("fill", "#007CE0")
+        var idArray = $(e.currentTarget).attr('id').split('-');
+        highlightOver(idArray[0], idArray[1]);
       }
     });
 
-    $('mark').on('mouseout', function() {
+    $('mark').on('mouseout', function(e) {
       if (animComplete) {
-        d3.selectAll('.spendingBar')
-          .transition()
-          .duration(300)
-          .attr("fill", "#007CE0")
+        var idArray = $(e.currentTarget).attr('id').split('-');
+        highlightOut(idArray[0], idArray[1]);
       }
     })
 
-
+    //ocha header handler
     $('.ocha-services').on('click', function() {
       $('.ocha-header .dropdown-menu').toggle();
     });
@@ -1032,23 +1055,10 @@ $( document ).ready(function() {
         $('.visual-col .container').fadeOut(0);
         $('#chart'+id).clearQueue().fadeIn(600);
 
-        if (id=='1') {
-          animPubLine();
-        }
-        if (id=='2') {
-          animOrgLine();
-        }
-        if (id=='3') {
-          animGap();
-        }
-        if (id=='4') {
-          animSpendingBar();
-        }
-        if (id=='5') {
-          animHealthLine();
-        }
+        animateChart(id);
       })
       .on('leave', function(e) {
+        animComplete = true;
         var id = $(e.target.triggerElement()).data('chart');
         $('.visual-col .container').fadeOut(0);
         $('#chart'+(id-1)).clearQueue().fadeIn(600);
@@ -1072,99 +1082,184 @@ $( document ).ready(function() {
     .addTo(controller);
   }
 
-  function animPubLine() {
-    var paths = d3.selectAll('.pubLine')
-      paths._groups[0].forEach(function(path, index) {
-        var pathLength = path.getTotalLength();
-        d3.selectAll('#pubLine'+index)
-          .attr('stroke-dashoffset', pathLength)
-          .attr('stroke-dasharray', pathLength)
-          .transition()
-          .duration(2000)
-          .ease(d3.easeLinear)
-          .attr('stroke-dashoffset', 0);
-      });
-      
-      d3.selectAll('.pubDot')
-        .attr('opacity', 0)
+
+  /** HIGHLIGHT FUNCTIONS **/
+  function highlightOver(chart, id) {
+    if (chart=='chart1') {
+      d3.selectAll('.pubLine, .pubDot')
+        .filter(function() {
+          return $(this).attr('id')!='pubLine'+id && !this.classList.contains('pubDot2')
+        })
         .transition()
-          .duration(200)
-          .delay(function(d, i) { return i*30; })
-          .ease(d3.easeLinear)
-            .attr("opacity", 1)
-  }
-
-  function animOrgLine() {
-    var paths = d3.selectAll('.orgLine')
-      paths._groups[0].forEach(function(path, index) {
-        var pathLength = path.getTotalLength();
-        d3.selectAll('#orgLine'+index)
-          .attr('stroke-dashoffset', pathLength)
-          .attr('stroke-dasharray', pathLength)
-          .transition()
-          .duration(2000)
-          .ease(d3.easeLinear)
-          .attr('stroke-dashoffset', 0);
-      });
-      
-      d3.selectAll('.orgDot')
-        .attr('opacity', 0)
+        .duration(300)
+        .attr('opacity', 0.3);
+    }
+    if (chart=='chart2') {
+      d3.selectAll('.orgLine, .orgDot')
+        .filter(function() {
+          return $(this).attr('id')!='orgLine'+id && !this.classList.contains('orgDot'+id)
+        })
         .transition()
-          .duration(200)
-          .delay(function(d, i) { return i*25; })
-          .ease(d3.easeLinear)
-            .attr("opacity", 1)
+        .duration(300)
+        .attr('opacity', 0.3);
+    }
+    if (chart=='chart3') {
+      var selectArray = ['#ecuador, #myanmar, #kenya, #niger, #kazakhstan', '#egypt, #nigeria, #turkey, #guatemala, #angola']
+      d3.selectAll(selectArray[id])
+        .transition()
+        .duration(300)
+        .attr('opacity', 0.3);
+    }
+    if (chart=='chart4') {
+      d3.selectAll('.spendingBar')
+        .filter(function() {
+          return $(this).attr('id')!='spendingBar'+id
+        })
+        .transition()
+        .duration(300)
+        .attr('fill', '#CCE5F9')
+    }
+    if (chart=='chart5') {
+      d3.selectAll('.highlightRing'+id)
+        .attr('opacity', 1);
+    }
   }
 
-  function animGap() {
-    d3.selectAll('.commitments')
-      .attr('cx', function(d) { return gapX(d['Net spending']); })
-      .transition()
-      .duration(800)
-      .ease(d3.easeQuadOut)
-      .attr('cx', function(d) { return gapX(d['Net commitments']); })
-
-    d3.selectAll('.gapLine')
-      .attr('x2', function(d) { return gapX(d['Net spending']); })
-      .transition()
-      .duration(800)
-      .ease(d3.easeQuadOut)
-      .attr('x2', function(d) { return gapX(d['Net commitments']); })
+  function highlightOut(chart, id) {
+    if (chart=='chart1') {
+      d3.selectAll('.pubLine, .pubDot')
+        .transition()
+        .duration(300)
+        .attr('opacity', 1)
+    }
+    if (chart=='chart2') {
+      d3.selectAll('.orgLine, .orgDot')
+        .transition()
+        .duration(300)
+        .attr('opacity', 1)
+    }
+    if (chart=='chart3') {
+      d3.selectAll('.gapLines')
+        .transition()
+        .duration(300)
+        .attr('opacity', 1);
+    }
+    if (chart=='chart4') {
+      d3.selectAll('.spendingBar')
+        .transition()
+        .duration(300)
+        .attr("fill", "#007CE0")
+    }
+    if (chart=='chart5') {
+      d3.selectAll('.highlightRing')
+        .attr('opacity', 0);
+    }
   }
 
-  function animSpendingBar() {
-    d3.selectAll('.spendingBar')
-      .attr('width', 0)
-      .transition()
-      .duration(800)
-      .ease(d3.easeQuadOut)
-      .attr('width', function(d, i) { return spendingX(d['Net new commitments']); })
-      .on('end', function(d, i) {
-        if (i==9) {
+  /** ANIMATION FUNCTIONS **/
+  function animateChart(id) {
+    if (id==1) {
+      var paths = d3.selectAll('.pubLine')
+        paths._groups[0].forEach(function(path, index) {
+          var pathLength = path.getTotalLength();
+          d3.selectAll('#pubLine'+index)
+            .attr('stroke-dashoffset', pathLength)
+            .attr('stroke-dasharray', pathLength)
+            .transition()
+            .duration(2000)
+            .ease(d3.easeLinear)
+            .attr('stroke-dashoffset', 0)
+            .on('end', function(d, i) {
+              animComplete = true;
+            });
+        });
+        
+        d3.selectAll('.pubDot')
+          .attr('opacity', 0)
+          .transition()
+            .duration(200)
+            .delay(function(d, i) { return i*30; })
+            .ease(d3.easeLinear)
+              .attr("opacity", 1)
+    }
+    if (id==2) {
+      var paths = d3.selectAll('.orgLine')
+        paths._groups[0].forEach(function(path, index) {
+          var pathLength = path.getTotalLength();
+          d3.selectAll('#orgLine'+index)
+            .attr('stroke-dashoffset', pathLength)
+            .attr('stroke-dasharray', pathLength)
+            .transition()
+            .duration(2000)
+            .ease(d3.easeLinear)
+            .attr('stroke-dashoffset', 0)
+            .on('end', function(d, i) {
+              animComplete = true;
+            });
+        });
+        
+        d3.selectAll('.orgDot')
+          .attr('opacity', 0)
+          .transition()
+            .duration(200)
+            .delay(function(d, i) { return i*25; })
+            .ease(d3.easeLinear)
+              .attr("opacity", 1)
+    }
+    if (id==3) {
+      d3.selectAll('.commitments')
+        .attr('cx', function(d) { return gapX(d['Net spending']); })
+        .transition()
+        .duration(800)
+        .ease(d3.easeQuadOut)
+        .attr('cx', function(d) { return gapX(d['Net commitments']); })
+
+      d3.selectAll('.gapLine')
+        .attr('x2', function(d) { return gapX(d['Net spending']); })
+        .transition()
+        .duration(800)
+        .ease(d3.easeQuadOut)
+        .attr('x2', function(d) { return gapX(d['Net commitments']); })
+        .on('end', function(d, i) {
           animComplete = true;
-        }
-      });
-  }
-
-  function animHealthLine() {    
-    var path = d3.selectAll('#healthLine')
-    if (path.node() != null) {
-      var pathLength = path.node().getTotalLength();
-      path
-        .attr('stroke-dashoffset', pathLength)
-        .attr('stroke-dasharray', pathLength)
+        });
+    }
+    if (id==4) {
+      d3.selectAll('.spendingBar')
+        .attr('width', 0)
         .transition()
-          .duration(2000)
-          .ease(d3.easeLinear)
-          .attr('stroke-dashoffset', 0);
+        .duration(800)
+        .ease(d3.easeQuadOut)
+        .attr('width', function(d, i) { return spendingX(d['Net new commitments']); })
+        .on('end', function(d, i) {
+          if (i==9) {
+            animComplete = true;
+          }
+        });
+    }
+    if (id==5) {
+      var path = d3.selectAll('#healthLine')
+      if (path.node() != null) {
+        var pathLength = path.node().getTotalLength();
+        path
+          .attr('stroke-dashoffset', pathLength)
+          .attr('stroke-dasharray', pathLength)
+          .transition()
+            .duration(2000)
+            .ease(d3.easeLinear)
+            .attr('stroke-dashoffset', 0)
+            .on('end', function(d, i) {
+              animComplete = true;
+            });
 
-      d3.selectAll('.healthDot')
-        .attr('opacity', 0)
-        .transition()
-          .duration(200)
-          .delay(function(d, i) { return i*100; })
-          .ease(d3.easeLinear)
-            .attr('opacity', 1)
+        d3.selectAll('.healthDot')
+          .attr('opacity', 0)
+          .transition()
+            .duration(200)
+            .delay(function(d, i) { return i*100; })
+            .ease(d3.easeLinear)
+              .attr('opacity', 1)
+      }
     }
   }
 

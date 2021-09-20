@@ -16,7 +16,7 @@ function make_y_gridlines(y) {
 
 function lineChart() {
   var marginL = (isMobile) ? 60 : 90;
-  var margin = {top: 0, right: 90, bottom: 40, left: marginL},
+  var margin = {top: 10, right: 90, bottom: 40, left: marginL},
       width = chartW - margin.left - margin.right,
       height = chartH - margin.top - margin.bottom;
 
@@ -41,7 +41,7 @@ function lineChart() {
   d3.csv("data/iati-c19-publishers.csv", 
     function(d) {
       if (d['Publisher Group']!='') {
-        return { date: d3.timeParse("%Y-%m-%d")(d.Date), value: d['SUM of # Publishers'], name: d['Publisher Group'] }
+        return { date: d3.timeParse("%Y-%m")(d.Date), value: d['SUM of # Publishers'], name: d['Publisher Group'] }
       }
     },
 
@@ -52,7 +52,7 @@ function lineChart() {
         .entries(data);
 
       //x axis
-      var x = d3.scaleLinear()
+      var x = d3.scaleTime()
         .domain(d3.extent(data, function(d) { return d.date; }))
         .range([ 0, width ]);
       svg.append("g")
@@ -204,7 +204,7 @@ function growthChart() {
 
       //x axis
       var maxTicks = (isMobile) ? 3 : 5;
-      var x = d3.scaleLinear()
+      var x = d3.scaleTime()
         .domain(d3.extent(data, function(d) { return d.date; }))
         .range([ 0, width ]);
       svg.append("g")
@@ -268,6 +268,22 @@ function growthChart() {
               .y(function(d) { return y(+d.value); })
               (d.values)
           });
+
+      //highlight lines
+      svg.selectAll("highlight")
+          .data(data)
+        .enter().append('line')
+          .attr("class", function(d) { 
+            return (d.date.getMonth()==2 || d.date.getMonth()==5 || d.date.getMonth()==8 || d.date.getMonth()==11) ? "highlightLine" : ""; 
+          })
+          .style("stroke", "#CCC")
+          .style("stroke-width", 1)
+          .attr("stroke-dasharray", "4 2")
+          .attr("opacity", "0")
+          .attr("x1", function(d) { return x(d.date); })
+          .attr("y1", 0)
+          .attr("x2", function(d) { return x(d.date); })
+          .attr("y2", height);
 
       //dots
       var dots = svg.selectAll("dot")
@@ -1095,13 +1111,21 @@ $( document ).ready(function() {
         .attr('opacity', 0.3);
     }
     if (chart=='chart2') {
-      d3.selectAll('.orgLine, .orgDot')
-        .filter(function() {
-          return $(this).attr('id')!='orgLine'+id && !this.classList.contains('orgDot'+id)
-        })
-        .transition()
-        .duration(300)
-        .attr('opacity', 0.3);
+      if (id==2) {
+        d3.selectAll('.highlightLine')
+          .transition()
+          .duration(300)
+          .attr('opacity', 1);
+      }
+      else {
+        d3.selectAll('.orgLine, .orgDot')
+          .filter(function() {
+            return $(this).attr('id')!='orgLine'+id && !this.classList.contains('orgDot'+id)
+          })
+          .transition()
+          .duration(300)
+          .attr('opacity', 0.3);
+      }
     }
     if (chart=='chart3') {
       var selectArray = ['#ecuador, #myanmar, #kenya, #niger, #kazakhstan', '#egypt, #nigeria, #turkey, #guatemala, #angola']
@@ -1133,10 +1157,18 @@ $( document ).ready(function() {
         .attr('opacity', 1)
     }
     if (chart=='chart2') {
-      d3.selectAll('.orgLine, .orgDot')
-        .transition()
-        .duration(300)
-        .attr('opacity', 1)
+      if (id==2) {
+        d3.selectAll('.highlightLine')
+          .transition()
+          .duration(300)
+          .attr('opacity', 0);
+      }
+      else {
+        d3.selectAll('.orgLine, .orgDot')
+          .transition()
+          .duration(300)
+          .attr('opacity', 1);
+      }
     }
     if (chart=='chart3') {
       d3.selectAll('.gapLines')
@@ -1266,7 +1298,7 @@ $( document ).ready(function() {
 
   function initTracking() {
     //initialize mixpanel
-    let MIXPANEL_TOKEN = '';
+    let MIXPANEL_TOKEN = window.location.hostname==='data.humdata.org'? '5cbf12bc9984628fb2c55a49daf32e74' : '99035923ee0a67880e6c05ab92b6cbc0';
     mixpanel.init(MIXPANEL_TOKEN);
     mixpanel.track('page view', {
       'page title': document.title,
@@ -1275,5 +1307,5 @@ $( document ).ready(function() {
   }
 
   init();
-  //initTracking();
+  initTracking();
 });

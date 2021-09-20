@@ -121,7 +121,10 @@ function lineChart() {
         .enter().append("circle")
           .attr("r", 3)
           .attr("opacity", 1)
-          .attr("class", "pubDot")
+          .attr("class", function(d) { 
+            var className = (d.name=='Non Governmental Organization') ? 'pubDot pubDot2' : 'pubDot';
+            return className
+          })
           .attr("fill", function(d){ return color(d.name) })
           .attr("cx", function(d) { return x(d.date); })
           .attr("cy", function(d) { return y(d.value); })
@@ -164,7 +167,7 @@ function lineChart() {
 
 function growthChart() {
   var marginL = (isMobile) ? 60 : 90;
-  var margin = {top: 0, right: 90, bottom: 40, left: marginL},
+  var margin = {top: 3, right: 90, bottom: 40, left: marginL},
       width = chartW - margin.left - margin.right,
       height = chartH - margin.top - margin.bottom;
 
@@ -272,6 +275,14 @@ function growthChart() {
           .attr("r", 3)
           .attr("opacity", 1)
           .attr("class", "orgDot")
+          .attr("class", function(d) {
+            var className = 'orgDot';
+            if (d.name=='Multilateral')
+              className += ' orgDot1';
+            if (d.name=='Government & Public Sector')
+              className += ' orgDot0';
+            return className
+          })
           .attr("fill", function(d){ return color(d.name) })
           .attr("cx", function(d) { return x(d.date); })
           .attr("cy", function(d) { return y(d.value); })
@@ -404,7 +415,11 @@ function lollipopChart() {
     var lines = svg.selectAll("deficitLine")
       .data(chartData)
       .enter()
-      .append('g');
+      .append('g')
+        .attr("class", "gapLines")
+        .attr("id", function(d) {
+          return (d['Recipient country']).toLowerCase()
+        });
 
     lines.append("line")
         .attr("class", "gapLine")
@@ -453,8 +468,7 @@ function barChart() {
       .attr("width", width + margin.left + margin.right)
       .attr("height", height + margin.top + margin.bottom)
     .append("g")
-      .attr("transform",
-            "translate(" + margin.left + "," + margin.top + ")");
+      .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
 
   //init tooltip
   var tool_tip = d3.tip()
@@ -533,7 +547,7 @@ function barChart() {
 
 function healthChart() {
   var marginL = (isMobile) ? 60 : 90;
-  var margin = {top: 0, right: 90, bottom: 40, left: marginL},
+  var margin = {top: 8, right: 90, bottom: 40, left: marginL},
       width = chartW - margin.left - margin.right,
       height = chartH - margin.top - margin.bottom;
 
@@ -634,5 +648,24 @@ function healthChart() {
           .attr("opacity", 1)
           .on('mouseover', tool_tip.show)
           .on('mouseout', tool_tip.hide);
+
+      //highlights
+      var ring = svg
+        .append("g")
+        .selectAll("ring")
+        .data(data)
+        .enter()
+        .append("circle")
+          .attr("cx", function(d) { return x(d.date) } )
+          .attr("cy", function(d) { return y(d.value) } )
+          .attr("r", function(d) { if (d.value>1000000000) return 8; })
+          .attr("stroke", "#F2645A")
+          .attr("fill", "none")
+          .attr("stroke-dasharray", "4 2")
+          .attr("class", function(d) {
+            return (d.date.getFullYear()==2020) ? "highlightRing highlightRing0" : "highlightRing highlightRing1"
+          })
+          .attr("opacity", 0);
+
   })
 }

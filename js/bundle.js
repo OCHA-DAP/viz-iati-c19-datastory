@@ -475,7 +475,8 @@ function lollipopChart() {
 
 
 function barChart() {
-  var margin = {top: 0, right: 90, bottom: 50, left: 260},
+  var marginL = (isMobile) ? 160 : 260;
+  var margin = {top: 0, right: 90, bottom: 50, left: marginL},
       width = chartW - margin.left - margin.right,
       height = chartH - margin.top - margin.bottom;
 
@@ -543,7 +544,14 @@ function barChart() {
       .padding(.3);
     svg.append("g")
       .attr("class", "y axis")
-      .call(d3.axisLeft(y))
+      .attr("alt", function(d) { return d; })
+      .call(d3.axisLeft(y)
+        .tickFormat(function(d, i) {
+          var maxChars = 28;
+          var sector = (d.length>maxChars && isMobile) ? d.slice(0, maxChars) + '...' : d;
+          return sector
+        })
+      )
 
     //bars
     svg.selectAll(".bar")
@@ -684,6 +692,42 @@ function healthChart() {
           })
           .attr("opacity", 0);
 
+  })
+}
+
+function truncateLabel(text, width) {
+  text.each(function() {
+    gameName = d3.select(this).text();
+    if(gameName.length > 10){
+        gameName = gameName.slice(0,10)
+    }
+    d3.select(this).text(gameName)
+  })
+}
+
+
+function wrap(text, width) {
+  console.log(text)
+  text.each(function() {
+    var text = d3.select(this),
+        words = text.text().split(/\s+/).reverse(),
+        word,
+        line = [],
+        lineNumber = 0,
+        lineHeight = 1.1, // ems
+        y = text.attr("y"),
+        dy = parseFloat(text.attr("dy")),
+        tspan = text.text(null).append("tspan").attr("x", 0).attr("y", y).attr("dy", dy + "em")
+    while (word = words.pop()) {
+      line.push(word)
+      tspan.text(line.join(" "))
+      if (tspan.node().getComputedTextLength() > width) {
+        line.pop()
+        tspan.text(line.join(" "))
+        line = [word]
+        tspan = text.append("tspan").attr("x", 0).attr("y", y).attr("dy", `${++lineNumber * lineHeight + dy}em`).text(word)
+      }
+    }
   })
 }
 // d3.tip
@@ -1030,26 +1074,26 @@ $( document ).ready(function() {
         $('#chart'+i).insertAfter($('section[data-chart='+i+']'));
       }
     }
-    else {
-      initScroller();
-    }
+    initScroller();
   }
 
   function setHandlers() {
     //highlights handler
-    $('mark').on('mouseover', function(e) {
-      if (animComplete) {
-        var idArray = $(e.currentTarget).attr('id').split('-');
-        highlightOver(idArray[0], idArray[1]);
-      }
-    });
+    if (!isMobile) {
+      $('mark').on('mouseover', function(e) {
+        if (animComplete) {
+          var idArray = $(e.currentTarget).attr('id').split('-');
+          highlightOver(idArray[0], idArray[1]);
+        }
+      });
 
-    $('mark').on('mouseout', function(e) {
-      if (animComplete) {
-        var idArray = $(e.currentTarget).attr('id').split('-');
-        highlightOut(idArray[0], idArray[1]);
-      }
-    })
+      $('mark').on('mouseout', function(e) {
+        if (animComplete) {
+          var idArray = $(e.currentTarget).attr('id').split('-');
+          highlightOut(idArray[0], idArray[1]);
+        }
+      });
+    }
 
     //ocha header handler
     $('.ocha-services').on('click', function() {
@@ -1061,13 +1105,15 @@ $( document ).ready(function() {
     var controller = new ScrollMagic.Controller();
     var sections = document.querySelectorAll('.step');
     for (var i=0; i<sections.length; i++) {
+      var el = (isMobile) ? document.querySelector('#chart' + $(sections[i]).attr('data-chart')) : sections[i];
+      var hook = (isMobile) ? 1 : 0.5;
       new ScrollMagic.Scene({
-        triggerElement: sections[i],
-        triggerHook: 0.5
+        triggerElement: el,
+        triggerHook: hook
       })
       .on('enter', function(e) {
         animComplete = false;
-        var id = $(e.target.triggerElement()).data('chart');
+        var id = (isMobile) ? $(e.target.triggerElement()).attr('id').split('chart')[1] : $(e.target.triggerElement()).data('chart');
         $('.visual-col .container').fadeOut(0);
         $('#chart'+id).clearQueue().fadeIn(600);
 
@@ -1075,7 +1121,7 @@ $( document ).ready(function() {
       })
       .on('leave', function(e) {
         animComplete = true;
-        var id = $(e.target.triggerElement()).data('chart');
+        var id = (isMobile) ? $(e.target.triggerElement()).attr('id').split('chart')[1] : $(e.target.triggerElement()).data('chart');
         $('.visual-col .container').fadeOut(0);
         $('#chart'+(id-1)).clearQueue().fadeIn(600);
       })

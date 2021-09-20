@@ -1,4 +1,4 @@
-# Viz Starter
+# IATI C19 Data story
 
 ### Set up
 * Check out the repository

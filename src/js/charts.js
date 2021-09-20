@@ -474,7 +474,8 @@ function lollipopChart() {
 
 
 function barChart() {
-  var margin = {top: 0, right: 90, bottom: 50, left: 260},
+  var marginL = (isMobile) ? 160 : 260;
+  var margin = {top: 0, right: 90, bottom: 50, left: marginL},
       width = chartW - margin.left - margin.right,
       height = chartH - margin.top - margin.bottom;
 
@@ -542,7 +543,14 @@ function barChart() {
       .padding(.3);
     svg.append("g")
       .attr("class", "y axis")
-      .call(d3.axisLeft(y))
+      .attr("alt", function(d) { return d; })
+      .call(d3.axisLeft(y)
+        .tickFormat(function(d, i) {
+          var maxChars = 28;
+          var sector = (d.length>maxChars && isMobile) ? d.slice(0, maxChars) + '...' : d;
+          return sector
+        })
+      )
 
     //bars
     svg.selectAll(".bar")
@@ -683,5 +691,41 @@ function healthChart() {
           })
           .attr("opacity", 0);
 
+  })
+}
+
+function truncateLabel(text, width) {
+  text.each(function() {
+    gameName = d3.select(this).text();
+    if(gameName.length > 10){
+        gameName = gameName.slice(0,10)
+    }
+    d3.select(this).text(gameName)
+  })
+}
+
+
+function wrap(text, width) {
+  console.log(text)
+  text.each(function() {
+    var text = d3.select(this),
+        words = text.text().split(/\s+/).reverse(),
+        word,
+        line = [],
+        lineNumber = 0,
+        lineHeight = 1.1, // ems
+        y = text.attr("y"),
+        dy = parseFloat(text.attr("dy")),
+        tspan = text.text(null).append("tspan").attr("x", 0).attr("y", y).attr("dy", dy + "em")
+    while (word = words.pop()) {
+      line.push(word)
+      tspan.text(line.join(" "))
+      if (tspan.node().getComputedTextLength() > width) {
+        line.pop()
+        tspan.text(line.join(" "))
+        line = [word]
+        tspan = text.append("tspan").attr("x", 0).attr("y", y).attr("dy", `${++lineNumber * lineHeight + dy}em`).text(word)
+      }
+    }
   })
 }

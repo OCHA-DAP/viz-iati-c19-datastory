@@ -407,6 +407,10 @@ mark {
 	h3 {
 		margin-left: 0;
 	}
+	mark {
+		background-color: transparent;
+		cursor: auto;
+	}
 	.introduction {
 		height: auto;
 		margin-top: 100px;

@@ -101,13 +101,21 @@ $( document ).ready(function() {
         .attr('opacity', 0.3);
     }
     if (chart=='chart2') {
-      d3.selectAll('.orgLine, .orgDot')
-        .filter(function() {
-          return $(this).attr('id')!='orgLine'+id && !this.classList.contains('orgDot'+id)
-        })
-        .transition()
-        .duration(300)
-        .attr('opacity', 0.3);
+      if (id==2) {
+        d3.selectAll('.highlightLine')
+          .transition()
+          .duration(300)
+          .attr('opacity', 1);
+      }
+      else {
+        d3.selectAll('.orgLine, .orgDot')
+          .filter(function() {
+            return $(this).attr('id')!='orgLine'+id && !this.classList.contains('orgDot'+id)
+          })
+          .transition()
+          .duration(300)
+          .attr('opacity', 0.3);
+      }
     }
     if (chart=='chart3') {
       var selectArray = ['#ecuador, #myanmar, #kenya, #niger, #kazakhstan', '#egypt, #nigeria, #turkey, #guatemala, #angola']
@@ -139,10 +147,18 @@ $( document ).ready(function() {
         .attr('opacity', 1)
     }
     if (chart=='chart2') {
-      d3.selectAll('.orgLine, .orgDot')
-        .transition()
-        .duration(300)
-        .attr('opacity', 1)
+      if (id==2) {
+        d3.selectAll('.highlightLine')
+          .transition()
+          .duration(300)
+          .attr('opacity', 0);
+      }
+      else {
+        d3.selectAll('.orgLine, .orgDot')
+          .transition()
+          .duration(300)
+          .attr('opacity', 1);
+      }
     }
     if (chart=='chart3') {
       d3.selectAll('.gapLines')
@@ -272,7 +288,7 @@ $( document ).ready(function() {
 
   function initTracking() {
     //initialize mixpanel
-    let MIXPANEL_TOKEN = '';
+    let MIXPANEL_TOKEN = window.location.hostname==='data.humdata.org'? '5cbf12bc9984628fb2c55a49daf32e74' : '99035923ee0a67880e6c05ab92b6cbc0';
     mixpanel.init(MIXPANEL_TOKEN);
     mixpanel.track('page view', {
       'page title': document.title,
@@ -281,5 +297,5 @@ $( document ).ready(function() {
   }
 
   init();
-  //initTracking();
+  initTracking();
 });

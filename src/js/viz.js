@@ -2,7 +2,7 @@ let spendingX, gapX;
 let animComplete = false;
 let isMobile = $(window).width() < 768 ? true : false;
 let chartH = (isMobile) ? 300 : 350;
-let chartW = (isMobile) ? $(window).width() + 50 : 750;
+let chartW = (isMobile) ? $(window).width() + 40 : 750;
 
 $( document ).ready(function() {
   function init() {

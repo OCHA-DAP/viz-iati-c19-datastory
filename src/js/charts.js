@@ -682,9 +682,12 @@ function healthChart() {
         .append("circle")
           .attr("cx", function(d) { return x(d.date) } )
           .attr("cy", function(d) { return y(d.value) } )
-          .attr("r", function(d) { if (d.value>1000000000) return 8; })
-          .attr("stroke", "#F2645A")
+          .attr("r", function(d) {
+            if (d.value>2000000000) return 8; 
+          })
           .attr("fill", "none")
+          .attr("stroke", "#F2645A")
+          .attr("stroke-width", 1.5)
           .attr("stroke-dasharray", "4 2")
           .attr("class", function(d) {
             return (d.date.getFullYear()==2020) ? "highlightRing highlightRing0" : "highlightRing highlightRing1"

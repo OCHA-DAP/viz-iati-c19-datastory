@@ -1072,7 +1072,8 @@
     grid-template-columns: repeat(2, 1fr);
     grid-column-gap: 10px;
     grid-row-gap: 0;
-    max-width: 100%; }
+    max-width: 100%;
+    overflow: hidden; }
   .col-3,
   .col-4,
   .col-5,
